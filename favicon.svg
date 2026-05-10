@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="VaporHuman">
+  <rect width="64" height="64" fill="#f7f2e8"/>
+  <circle cx="32" cy="25" r="13" fill="#204fc4"/>
+  <path d="M12 58c3-14 12-22 20-22s17 8 20 22" fill="#b7d334"/>
+  <path d="M16 12h32v6H16z" fill="#e9691d"/>
+</svg>
