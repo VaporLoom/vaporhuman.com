@@ -18,6 +18,14 @@ drafts until separately approved for commit, push, deployment, and verification.
 - `robots.txt` - crawler policy
 - `sitemap.xml` - machine-readable page list
 
+## Planning docs
+
+- `docs/planning/privacy-first-analytics-localization-surfaces.md` - privacy-first
+  planning packet for analytics, metrics, language, nationality, footer, and
+  localization surfaces, including the evidence gate for moving local draft
+  work to remote/public review; this does not make analytics, tracking,
+  localization, forms, accounts, or public behavior live.
+
 ## Boundaries
 
 Keep the site static-only unless Irie explicitly approves a new gate:
