@@ -7,7 +7,7 @@ import PageHero from "../components/PageHero.astro";
 const description = "Accessibility posture for the VaporHuman site.";
 const cards = [
   { title: "Semantic structure", body: "Pages use headings, landmarks, lists, and descriptive link text where practical." },
-  { title: "No hidden interactions", body: "There are no forms, popups, account flows, or client-side app controls." },
+  { title: "No hidden interactions", body: "There are no embedded forms, popups, account flows, or client-side app controls." },
   { title: "Readable defaults", body: "The design favors large type, strong contrast, and responsive layouts." },
   { title: "Reviewable content", body: "The site is intentionally simple so issues can be found and corrected." }
 ];
@@ -25,7 +25,7 @@ const cards = [
       <p>
         VaporHuman is built with static output, semantic headings, text-first
         content, visible links, keyboard-friendly navigation, and no tracking or
-        third-party embeds.
+        third-party embeds. The work-intake path opens a hosted Tally form.
       </p>
       <p>
         This is not a formal conformance certification. It is a current posture
@@ -40,9 +40,8 @@ const cards = [
 
   <Band variant="status" kicker="Known limits" title="Feedback path is not public yet." id="limits-title" columns>
     <p>
-      No public email or contact form is active yet. Until the email lane is
-      verified and approved, accessibility feedback collection is not published
-      on this site.
+      No public email address is active yet. The Tally work-intake form is not
+      a dedicated accessibility feedback channel.
     </p>
   </Band>
 </BaseLayout>

@@ -1,51 +1,74 @@
 export const intakeFields = [
   {
-    label: "Company name",
-    example: "Acme Studio, solo founder, creator brand, or internal team"
+    label: "Company / Project Name",
+    example: "Business, creator brand, internal team, or active project"
   },
   {
-    label: "Company size",
+    label: "Contact Name",
+    example: "Primary person for follow-up"
+  },
+  {
+    label: "Email Address",
+    example: "Reply address for this request"
+  },
+  {
+    label: "Company Size",
     example: "Solo, 2-10, 11-50, 51-200, or 201+"
   },
   {
-    label: "Product or service",
+    label: "What Do You Need Help With?",
     example:
-      "Private continuity, workflow audit, support architecture, launch readiness, VaporCustos, or suite integration"
+      "AI workflow, lead generation, creator assets, support systems, accounting/admin automation, or suite product help"
   },
   {
-    label: "Buying stage",
-    example: "Exploring, needs proposal, ready for pilot, or ready for paid build"
+    label: "Buying Stage",
+    example: "Exploring options, need a recommendation, ready for a proposal, or ready to start"
   },
   {
-    label: "Main goal",
+    label: "Main Goal",
     example:
-      "Generate leads, improve operations, organize AI work, support customers, or build a private product lane"
+      "The outcome that would make the work successful"
   },
   {
     label: "Message",
     example:
-      "Short context about what you want VaporHuman to help build, fix, or make usable"
+      "Context, timeline, tools, constraints, or details that help route the request"
+  },
+  {
+    label: "Consent",
+    example:
+      "Agreement to use the submission to respond, with no secrets, payment details, or emergency requests"
   }
 ];
 
 export const productSelections = [
-  "VaporHuman private continuity system",
-  "Assistant workflow audit",
-  "Support knowledge base architecture",
-  "Launch readiness and public trust review",
-  "VaporCustos selected suite service",
-  "VaporArch improvement proposal loop",
-  "VaporStream / VaporTwitch creator workflow",
-  "Not sure yet"
+  "AI Workflow Help",
+  "Website / Lead Generation",
+  "Creator / Streaming Assets",
+  "Knowledge Base / Support System",
+  "Accounting / Admin Automation",
+  "VaporHuman Suite Product",
+  "Other / Not Sure Yet"
 ];
+
+export const leadIntakeForm = {
+  title: "VaporHuman Work Intake",
+  url: "https://tally.so/r/WOjO8k",
+  provider: "Tally",
+  status: "Live external intake link",
+  body:
+    "Use this hosted form for qualified work requests. Tally hosts the form; vaporhuman.com does not embed the form or run intake scripts.",
+  boundary:
+    "Do not submit secrets, payment details, private keys, recovery codes, sensitive personal data, or emergency requests."
+};
 
 export const providerRecommendations = [
   {
     title: "Lead intake",
-    provider: "Tally, Typeform, HubSpot, or custom form endpoint",
-    status: "Provider selection needed",
+    provider: "Tally hosted form",
+    status: "Live external intake link",
     body:
-      "Use for company name, company size, product/service selection, buying stage, and message capture."
+      "Use for company/project details, contact details, company size, service interest, buying stage, goal, message, and consent."
   },
   {
     title: "Paid services",
@@ -139,10 +162,10 @@ export const sharePages = [
 ];
 
 export const conversionGates = [
-  "Choose lead destination: CRM, email provider, database, or private queue.",
+  "Lead destination selected: Tally hosted form. Embeds, CRM routing, and webhooks remain separate gates.",
   "Choose checkout provider and product catalog owner.",
   "Approve privacy notice, retention, refunds, receipts, taxes, and support policy.",
-  "Add spam protection and failure-state copy before public lead capture.",
+  "Verify notification delivery, spam protection, and failure-state copy before scaling lead capture.",
   "Verify provider settings and rollback before deployment."
 ];
 

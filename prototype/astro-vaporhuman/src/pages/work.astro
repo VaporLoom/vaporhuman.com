@@ -7,6 +7,7 @@ import {
   checkoutTargets,
   conversionGates,
   intakeFields,
+  leadIntakeForm,
   productSelections,
   providerRecommendations
 } from "../data/conversion";
@@ -64,7 +65,7 @@ const fitCards = [
     body="The offer is practical: make assistant work restartable, reviewable, and safe enough to use in real operations before adding public automation."
   >
     <div class="button-row" aria-label="Work with VaporHuman actions">
-      <a class="button" href="#private-intake">Start private intake</a>
+      <a class="button" href={leadIntakeForm.url} target="_blank" rel="noopener noreferrer">Start work intake</a>
       <a class="button button--ghost" href="/shop.html">Visit the shop</a>
       <a class="button button--ghost" href="/trust.html">Check the boundary</a>
     </div>
@@ -78,19 +79,30 @@ const fitCards = [
     <CardGrid cards={fitCards} three />
   </Band>
 
-  <Band variant="status" kicker="Private intake" title="Use it privately first, then open the funnel." id="private-intake" columns>
+  <Band variant="status" kicker="Private intake" title="Use the hosted intake path." id="private-intake" columns>
     <div>
       <p>
-        The right next product step is a private intake lane: one approved owner,
-        one approved contact path, one approved payment or invoice path, and a
-        clear record of what the client wants VaporHuman to help build.
+        The current intake path is a hosted Tally form for qualified work
+        requests. It is meant to capture the company/project, contact details,
+        company size, service interest, buying stage, goal, message, and
+        consent.
       </p>
       <p>
-        Public forms, checkout, CRM, analytics, and email capture are not wired
-        in this source build yet. They should be connected only after the exact
-        providers and data policy are approved.
+        The form is external to vaporhuman.com. This source build does not
+        embed the form, run analytics, add a CRM endpoint, create accounts, or
+        process payments.
       </p>
+      <div class="button-row" aria-label="Private intake provider action">
+        <a class="button" href={leadIntakeForm.url} target="_blank" rel="noopener noreferrer">Open the intake form</a>
+      </div>
       <p class="principle">Remote-private first. Public automation second.</p>
+    </div>
+    <div class="conversion-card">
+      <p class="status-label">{leadIntakeForm.status}</p>
+      <h3>{leadIntakeForm.title}</h3>
+      <p><strong>{leadIntakeForm.provider}</strong></p>
+      <p>{leadIntakeForm.body}</p>
+      <p>{leadIntakeForm.boundary}</p>
     </div>
   </Band>
 

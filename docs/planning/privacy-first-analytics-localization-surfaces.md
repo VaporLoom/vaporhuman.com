@@ -6,7 +6,11 @@
 
 ## Current boundary
 
-The current public artifact is static-only. Existing pages and README state that the site has no forms, login, checkout, payment flow, donation flow, contact capture, analytics, tracking scripts, public email address, or live assistant service.
+The current public artifact is static-only and now uses an outbound hosted
+Tally work-intake link. Existing source boundaries still prohibit embedded
+forms, login, checkout, payment flow, donation flow, analytics, tracking
+scripts, public email address, CRM endpoints, webhooks, or live assistant
+service without a separate gate.
 
 This packet does not change that. It is a planning surface only.
 

@@ -113,10 +113,11 @@ if (!existsSync(dist)) {
   if (existsSync(workPath)) {
     const work = readFileSync(workPath, "utf8");
     for (const signal of [
-      "Company name",
-      "Company size",
-      "Product or service",
-      "VaporCustos",
+      "Company / Project Name",
+      "Company Size",
+      "What Do You Need Help With?",
+      "https://tally.so/r/WOjO8k",
+      "Accounting / Admin Automation",
       "Stripe Payment Link pending",
       "Before leads or money move"
     ]) {

@@ -51,9 +51,10 @@ Removed from generated Astro output:
 - `/continuity.html`
 - `/donations.html`
 
-`/work.html` is the current public offer/private-intake surface. It does not
-yet include a live form, public email address, CRM endpoint, checkout link,
-payment provider, analytics script, account behavior, or deployment approval.
+`/work.html` is the current public offer/private-intake surface. It now has an
+approved outbound link to the hosted Tally work-intake form. It does not embed a
+form, publish a public email address, connect a CRM endpoint, add a checkout
+link, payment provider, analytics script, account behavior, or provider webhook.
 
 ## OpenClaw status check
 
@@ -97,8 +98,10 @@ Use official/current provider docs before implementation. As of this handoff:
 
 Suggested provider split:
 
-- **Lead intake:** start with a provider-backed form or CRM only after the
-  destination, retention, spam protection, and privacy notice are approved.
+- **Lead intake:** start with Tally as a hosted form link after the exact
+  public form URL, retention, notification owner, spam protection, and privacy
+  notice are approved. See
+  `docs/handoffs/lead-intake-provider-runbook.md`.
 - **Paid services and suite checkout:** Stripe Payment Links first.
 - **Merch/live creator commerce:** existing Fourthwall shop first; later connect
   `shop.vaporhuman.com` through Fourthwall plus DNS approval.
@@ -118,8 +121,8 @@ analytics without a fresh exact approval.
 
 Next approval gates:
 
-1. Select lead intake destination: CRM, form provider, email provider, database,
-   or private queue.
+1. Verify the Tally `VaporHuman Work Intake` public form URL is live, then keep
+   embed, CRM, webhook, analytics, and payment routing as separate gates.
 2. Select payment provider path: Stripe Payment Links, PayPal Donate, both, or
    delay donations until service payments are live.
 3. Select crowdfunding path: none, Kickstarter, Indiegogo, GoFundMe, Patreon,

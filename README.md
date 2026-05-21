@@ -26,24 +26,29 @@ drafts until separately approved for commit, push, deployment, and verification.
   localization surfaces, including the evidence gate for moving local draft
   work to remote/public review; this does not make analytics, tracking,
   localization, forms, accounts, or public behavior live.
+- `docs/handoffs/lead-intake-provider-runbook.md` - provider-selection packet
+  for the first hosted lead-intake gate. It recommends Tally first, with
+  HubSpot/CRM, webhooks, embeds, and analytics deferred to later gates.
 
 ## Boundaries
 
 Keep the site static-only unless Irie explicitly approves a new gate:
 
-- no forms
+- no embedded forms
 - no login
 - no checkout or payment flow
 - no direct donation flow or crowdfunding claim inside this repo
-- no contact capture
+- lead intake uses a hosted Tally form link, not an embedded site form
 - no analytics or tracking scripts
 - no public email address until the email lane has send/receive plus
   SPF/DKIM/DMARC proof
 
 The site may link to an external Fourthwall shop because Fourthwall hosts the
-storefront and checkout. Connecting `shop.vaporhuman.com`, adding lead forms,
-adding Stripe/PayPal links, or launching crowdfunding still requires exact
-provider, DNS, privacy, and deployment approval.
+storefront and checkout. The site may link to the external Tally work-intake
+form because Tally hosts the form. Embedding forms, connecting
+`shop.vaporhuman.com`, adding Stripe/PayPal links, wiring CRM/webhooks, or
+launching crowdfunding still requires exact provider, DNS, privacy, and
+deployment approval.
 
 Activation prep lives in
 `../../docs/vaporhuman.com-static-activation-readiness.md`. Keep site launch
