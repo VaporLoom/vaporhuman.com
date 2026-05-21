@@ -1,5 +1,9 @@
 ---
 import { site } from "../data/site";
+
+const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const analyticsEnabled =
+  typeof measurementId === "string" && /^G-[A-Z0-9-]+$/i.test(measurementId);
 ---
 
 <footer class="site-footer">
@@ -18,8 +22,11 @@ import { site } from "../data/site";
       <p>
         The work-intake path uses a hosted Tally form, and paid discovery uses
         a hosted Stripe Payment Link. This site does not embed forms, login,
-        checkout, analytics, tracking scripts, public email address, donation
-        flow, subscriptions, or live assistant service.
+        checkout, public email address, donation flow, subscriptions, or live
+        assistant service.
+        {analyticsEnabled
+          ? " Optional Google Analytics measurement loads only after a visitor allows analytics."
+          : " This build does not include analytics or tracking scripts."}
       </p>
     </section>
 

@@ -1,0 +1,123 @@
+---
+const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const analyticsEnabled =
+  typeof measurementId === "string" && /^G-[A-Z0-9-]+$/i.test(measurementId);
+---
+
+{analyticsEnabled && (
+  <>
+    <!-- vaporhuman-analytics-consent:start -->
+    <section
+      class="analytics-consent"
+      data-analytics-consent
+      hidden
+      aria-label="Analytics preference"
+    >
+      <div>
+        <p class="analytics-consent__title">Site measurement</p>
+        <p>
+          VaporHuman can use Google Analytics for aggregate page visits after
+          you allow it. No analytics tag loads before your choice.
+        </p>
+      </div>
+      <div class="analytics-consent__actions">
+        <button class="button" type="button" data-analytics-accept>
+          Allow analytics
+        </button>
+        <button class="button button--ghost" type="button" data-analytics-decline>
+          Decline
+        </button>
+      </div>
+    </section>
+    <script define:vars={{ measurementId }}>
+      (() => {
+        const choiceKey = "vh_analytics_consent";
+        const banner = document.querySelector("[data-analytics-consent]");
+        const accept = document.querySelector("[data-analytics-accept]");
+        const decline = document.querySelector("[data-analytics-decline]");
+        const resets = document.querySelectorAll("[data-analytics-reset]");
+        let loaded = false;
+
+        const hideBanner = () => {
+          if (banner) banner.setAttribute("hidden", "");
+        };
+
+        const showBanner = () => {
+          if (banner) banner.removeAttribute("hidden");
+        };
+
+        const loadAnalytics = () => {
+          if (loaded) return;
+          loaded = true;
+
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function gtag() {
+            window.dataLayer.push(arguments);
+          };
+
+          window.gtag("consent", "default", {
+            analytics_storage: "granted",
+            ad_storage: "denied",
+            ad_user_data: "denied",
+            ad_personalization: "denied"
+          });
+
+          const tag = document.createElement("script");
+          tag.async = true;
+          tag.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+          document.head.appendChild(tag);
+
+          window.gtag("js", new Date());
+          window.gtag("config", measurementId);
+        };
+
+        let storedChoice = null;
+        try {
+          storedChoice = window.localStorage.getItem(choiceKey);
+        } catch {
+          storedChoice = null;
+        }
+
+        if (storedChoice === "granted") {
+          hideBanner();
+          loadAnalytics();
+        } else if (storedChoice === "denied") {
+          hideBanner();
+        } else {
+          showBanner();
+        }
+
+        accept?.addEventListener("click", () => {
+          try {
+            window.localStorage.setItem(choiceKey, "granted");
+          } catch {
+            // If preference storage is blocked, keep the choice for this page only.
+          }
+          hideBanner();
+          loadAnalytics();
+        });
+
+        decline?.addEventListener("click", () => {
+          try {
+            window.localStorage.setItem(choiceKey, "denied");
+          } catch {
+            // If preference storage is blocked, no analytics tag has loaded.
+          }
+          hideBanner();
+        });
+
+        resets.forEach((reset) => {
+          reset.addEventListener("click", () => {
+            try {
+              window.localStorage.removeItem(choiceKey);
+            } catch {
+              // Keep the current page state if preference storage is blocked.
+            }
+            showBanner();
+          });
+        });
+      })();
+    </script>
+    <!-- vaporhuman-analytics-consent:end -->
+  </>
+)}

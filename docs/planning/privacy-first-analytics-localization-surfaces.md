@@ -73,6 +73,13 @@ checks generated files for scripts, forms, storage, tracking endpoints, OAuth
 endpoints, stale non-production routes, and sitemap consistency. It does not
 prove legal, privacy, deployment, provider, or public behavior readiness.
 
+Activation note, 2026-05-21: the source now contains a build-time gated account
+link and consent-gated Google Analytics scaffold. These remain inactive unless
+`PUBLIC_ACCOUNT_PORTAL_URL` or `PUBLIC_GA_MEASUREMENT_ID` are set during the
+public build. Live provider activation still requires reviewed values, privacy
+copy, QA, deployment, and post-deploy verification through
+`docs/handoffs/account-analytics-production-activation-runbook.md`.
+
 OpenClaw handoff note, 2026-05-21: keep OpenClaw in the loop through sanitized
 local handoff packets rather than mutating OpenClaw config, queues, provider
 accounts, GitHub metadata, DNS, hosting, or deployment state. Current handoff:

@@ -37,6 +37,9 @@ drafts until separately approved for commit, push, deployment, and verification.
   setup packet for the first Stripe-hosted paid-discovery link. It keeps
   checkout hosted by Stripe and defers embeds, subscriptions, donations, and
   custom scoped work to later gates.
+- `docs/handoffs/account-analytics-production-activation-runbook.md` - activation
+  packet for the public Account link, consent-gated Google Analytics, and
+  future VaporDash/VaporOps aggregate reporting.
 
 ## Boundaries
 
@@ -48,7 +51,9 @@ Keep the site static-only unless Irie explicitly approves a new gate:
 - no direct donation flow or crowdfunding claim inside this repo
 - lead intake uses a hosted Tally form link, not an embedded site form
 - paid discovery uses a hosted Stripe Payment Link, not embedded checkout code
-- no analytics or tracking scripts
+- no analytics or tracking scripts unless the approved build-time
+  `PUBLIC_GA_MEASUREMENT_ID` gate is intentionally set and the privacy/consent
+  copy is deployed with it
 - no public email address until the email lane has send/receive plus
   SPF/DKIM/DMARC proof
 

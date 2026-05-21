@@ -6,6 +6,12 @@ const dist = join(root, "dist");
 
 const failures = [];
 const notes = [];
+const gaMeasurementId = process.env.PUBLIC_GA_MEASUREMENT_ID || "";
+const analyticsGateEnabled = /^G-[A-Z0-9-]+$/i.test(gaMeasurementId);
+const commentedAnalyticsBlockPattern =
+  /<!-- vaporhuman-analytics-consent:start -->[\s\S]*?<!-- vaporhuman-analytics-consent:end -->/g;
+const generatedAnalyticsBlockPattern =
+  /<section class="analytics-consent"[\s\S]*?<\/section><script>\(function\(\)\{const measurementId = "[^"]+";[\s\S]*?<\/script>/g;
 
 function fail(message) {
   failures.push(message);
@@ -21,6 +27,43 @@ function walk(dir) {
 function routeReferencePattern(route) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return new RegExp(`(?:^|["'(/=\\s])/?${escaped}(?:$|["')?#<\\s])`, "i");
+}
+
+function stripApprovedAnalyticsBlocks(content, rel) {
+  const blocks = [
+    ...content.matchAll(commentedAnalyticsBlockPattern),
+    ...content.matchAll(generatedAnalyticsBlockPattern)
+  ];
+  if (blocks.length === 0) return content;
+
+  if (!analyticsGateEnabled) {
+    fail(`analytics consent block generated without PUBLIC_GA_MEASUREMENT_ID in ${rel}`);
+    return content;
+  }
+
+  for (const match of blocks) {
+    const block = match[0];
+    for (const signal of [
+      gaMeasurementId,
+      "data-analytics-consent",
+      "data-analytics-accept",
+      "data-analytics-decline",
+      "vh_analytics_consent",
+      "googletagmanager.com/gtag/js",
+      "analytics_storage",
+      "ad_storage",
+      "ad_user_data",
+      "ad_personalization"
+    ]) {
+      if (!block.includes(signal)) {
+        fail(`approved analytics block is missing ${signal} in ${rel}`);
+      }
+    }
+  }
+
+  return content
+    .replace(commentedAnalyticsBlockPattern, "")
+    .replace(generatedAnalyticsBlockPattern, "");
 }
 
 if (!existsSync(dist)) {
@@ -51,8 +94,9 @@ if (!existsSync(dist)) {
   ]);
 
   for (const file of textFiles) {
-    const content = readFileSync(file, "utf8");
     const rel = relative(root, file);
+    const rawContent = readFileSync(file, "utf8");
+    const content = stripApprovedAnalyticsBlocks(rawContent, rel);
     for (const check of forbidden) {
       if (check.pattern.test(content)) {
         fail(`${check.name} found in ${rel}`);
@@ -167,12 +211,19 @@ if (!existsSync(dist)) {
   const privacyPath = join(dist, "privacy.html");
   if (existsSync(privacyPath)) {
     const privacy = readFileSync(privacyPath, "utf8");
-    for (const signal of [
+    const privacySignals = analyticsGateEnabled ? [
+      "Tally hosts the work-intake form",
+      "Stripe hosts the paid-discovery checkout",
+      "Fourthwall hosts the creator shop",
+      "Google Analytics",
+      "Analytics is optional and consent-gated"
+    ] : [
       "Tally hosts the work-intake form",
       "Stripe hosts the paid-discovery checkout",
       "Fourthwall hosts the creator shop",
       "does not include analytics scripts"
-    ]) {
+    ];
+    for (const signal of privacySignals) {
       if (!privacy.includes(signal)) {
         fail(`privacy page signal missing: ${signal}`);
       }

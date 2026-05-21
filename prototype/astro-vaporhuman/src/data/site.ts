@@ -13,7 +13,7 @@ export const site = {
     { href: "/faq.html", label: "FAQ" }
   ],
   utilityActions: [
-    { label: "Login", action: "login" }
+    { label: "Account", action: "account" }
   ],
   utilityControls: [
     { label: "Currency", value: "USD" },

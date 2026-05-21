@@ -8,6 +8,10 @@ import { leadIntakeForm, paidDiscoveryLink, fourthwallShop } from "../data/conve
 const description =
   "Privacy policy for VaporHuman, including hosted intake, payment, and shop provider boundaries.";
 
+const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const analyticsEnabled =
+  typeof measurementId === "string" && /^G-[A-Z0-9-]+$/i.test(measurementId);
+
 const dataCards = [
   {
     title: "Work intake",
@@ -26,8 +30,15 @@ const dataCards = [
   },
   {
     title: "Static site",
-    body:
-      "The VaporHuman source build does not include analytics scripts, tracking pixels, embedded forms, cookies, local storage, or account login."
+    body: analyticsEnabled
+      ? "This build includes an optional Google Analytics tag that loads only after a visitor allows analytics. Declining analytics keeps the tag unloaded."
+      : "The VaporHuman source build does not include analytics scripts, tracking pixels, embedded forms, cookies, local storage, or account login."
+  },
+  {
+    title: "Site measurement",
+    body: analyticsEnabled
+      ? "Google Analytics may report aggregate page visits and user-attribute reports when available. VaporHuman uses this for internal admin review, not member-facing decisions."
+      : "Site measurement is prepared as a future gate, but no Google Analytics tag is active in this build."
   }
 ];
 
@@ -100,6 +111,48 @@ const useCards = [
           available at <a href="https://fourthwall.com/privacy-policy">fourthwall.com/privacy-policy</a>.
         </p>
       </article>
+      {analyticsEnabled && (
+        <article class="conversion-card">
+          <p class="status-label">Optional analytics</p>
+          <h3><a href="https://policies.google.com/privacy">Google Analytics</a></h3>
+          <p>
+            Google Analytics loads only after a visitor allows analytics. You
+            can reset your analytics choice on this page.
+          </p>
+          <p>
+            <button class="inline-action" type="button" data-analytics-reset>
+              Reset analytics choice
+            </button>
+          </p>
+        </article>
+      )}
+    </div>
+  </Band>
+
+  <Band variant="status" kicker="Analytics" title={analyticsEnabled ? "Analytics is optional and consent-gated." : "Analytics is not active in this build."} id="analytics" columns>
+    <div>
+      {analyticsEnabled ? (
+        <>
+          <p>
+            VaporHuman uses Google Analytics for aggregate site measurement
+            only after a visitor allows analytics. The site does not load the
+            Google tag before that choice.
+          </p>
+          <p>
+            Demographic and interest reports, if enabled in Google Analytics,
+            are aggregate reports and may be unavailable when Google applies
+            privacy thresholds. They are for admin-only trend review, not
+            account eligibility or member-facing personalization.
+          </p>
+        </>
+      ) : (
+        <p>
+          The live public build does not include analytics scripts, tracking
+          pixels, or a Google Analytics Measurement ID. Analytics can be
+          activated later only through the approved provider, consent, privacy,
+          deployment, and verification gate.
+        </p>
+      )}
     </div>
   </Band>
 

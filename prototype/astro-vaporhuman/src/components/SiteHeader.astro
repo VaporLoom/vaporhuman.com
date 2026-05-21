@@ -6,6 +6,9 @@ interface Props {
 }
 
 const { currentPath = "/" } = Astro.props;
+const accountPortalUrl = import.meta.env.PUBLIC_ACCOUNT_PORTAL_URL;
+const accountPortalEnabled =
+  typeof accountPortalUrl === "string" && /^https:\/\/[a-z0-9.-]+(?:\/.*)?$/i.test(accountPortalUrl);
 ---
 
 <header class="site-header" aria-label="Site header">
@@ -23,15 +26,27 @@ const { currentPath = "/" } = Astro.props;
     </nav>
     <nav class="utility-nav" aria-label="Account and preference navigation">
       {site.utilityActions.map((item) => (
-        <button
-          class="utility-link"
-          type="button"
-          disabled
-          data-action={item.action}
-          aria-label={`${item.label} application action placeholder`}
-        >
-          {item.label}
-        </button>
+        accountPortalEnabled && item.action === "account" ? (
+          <a
+            class="utility-link"
+            href={accountPortalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the private account portal"
+          >
+            {item.label}
+          </a>
+        ) : (
+          <button
+            class="utility-link"
+            type="button"
+            disabled
+            data-action={item.action}
+            aria-label={`${item.label} application action placeholder`}
+          >
+            {item.label}
+          </button>
+        )
       ))}
       {site.utilityControls.map((control) => (
         <button

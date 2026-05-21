@@ -1,6 +1,7 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import AnalyticsConsent from "../components/AnalyticsConsent.astro";
 import { site } from "../data/site";
 import "../styles/global.css";
 
@@ -51,5 +52,6 @@ const imageUrl = new URL(site.image, site.origin).toString();
       <slot />
     </main>
     <SiteFooter />
+    <AnalyticsConsent />
   </body>
 </html>
