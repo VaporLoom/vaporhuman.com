@@ -267,6 +267,99 @@ p {
   color: var(--ink);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .hero__content,
+  .page-hero__grid,
+  .section-heading,
+  .two-column > *,
+  .status-grid > * {
+    animation: rise-in 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .question-list li,
+  .principles li,
+  .card,
+  .step-list article {
+    animation: tile-in 680ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .question-list li:nth-child(2),
+  .principles li:nth-child(2),
+  .card:nth-child(2),
+  .step-list article:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .question-list li:nth-child(3),
+  .principles li:nth-child(3),
+  .card:nth-child(3),
+  .step-list article:nth-child(3) {
+    animation-delay: 150ms;
+  }
+
+  .button,
+  .site-nav a,
+  .card,
+  .question-list li,
+  .principles li {
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      color 180ms ease,
+      background-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .button:hover,
+  .button:focus-visible,
+  .site-nav a:hover,
+  .site-nav a:focus-visible {
+    transform: translateY(-1px);
+  }
+
+  .card:hover,
+  .question-list li:hover,
+  .principles li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.75rem 1.5rem rgba(21, 21, 21, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.9rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .question-list,
 .principles,
 .card-grid,
