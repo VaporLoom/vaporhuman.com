@@ -67,7 +67,9 @@ if (!existsSync(dist)) {
     }
   }
 
-  const noindexRoutes = [];
+  const noindexRoutes = [
+    "next-steps.html"
+  ];
 
   for (const route of noindexRoutes) {
     const file = join(dist, route);
@@ -203,6 +205,22 @@ if (!existsSync(dist)) {
     ]) {
       if (!refund.includes(signal)) {
         fail(`refund/support page signal missing: ${signal}`);
+      }
+    }
+  }
+
+  const nextStepsPath = join(dist, "next-steps.html");
+  if (existsSync(nextStepsPath)) {
+    const nextSteps = readFileSync(nextStepsPath, "utf8");
+    for (const signal of [
+      "robots\" content=\"noindex,nofollow",
+      "After intake",
+      "After paid discovery",
+      "Open intake form",
+      "This page is only a confirmation and routing surface"
+    ]) {
+      if (!nextSteps.includes(signal)) {
+        fail(`next steps page signal missing: ${signal}`);
       }
     }
   }

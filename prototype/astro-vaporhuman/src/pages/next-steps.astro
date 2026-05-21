@@ -1,0 +1,107 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+import { leadIntakeForm, paidDiscoveryLink, fourthwallShop } from "../data/conversion";
+
+const description =
+  "Next steps after using a VaporHuman hosted intake, paid discovery, or shop provider flow.";
+
+const nextStepCards = [
+  {
+    title: "After intake",
+    body:
+      "The Tally-hosted form sends the submitted request for review. VaporHuman may reply, ask for clarification, suggest paid discovery, or decline work that is not a fit."
+  },
+  {
+    title: "After paid discovery",
+    body:
+      "Stripe sends the payment receipt. VaporHuman reviews the available context and follows up about scheduling, scope, and the next practical recommendation."
+  },
+  {
+    title: "After shop checkout",
+    body:
+      "Fourthwall handles creator-shop checkout, memberships, fulfillment, and shop-order support separately from VaporHuman service delivery."
+  }
+];
+---
+
+<BaseLayout
+  title="Next Steps"
+  description={description}
+  canonicalPath="/next-steps.html"
+  currentPath="/next-steps.html"
+  robots="noindex,nofollow"
+>
+  <PageHero
+    kicker="Next steps"
+    title="Your request is in the provider lane."
+    lede="Use this page after a hosted intake, paid discovery, or shop checkout flow to understand what happens next."
+    body="No login, account portal, embedded form, analytics, tracking, or live support chat is running on this page."
+  />
+
+  <Band variant="status" kicker="Confirmation" title="The live workflows are hosted." id="confirmation">
+    <CardGrid cards={nextStepCards} three />
+  </Band>
+
+  <Band variant="intro" kicker="Continue" title="Use the right route if you landed here early." id="continue">
+    <div class="conversion-grid">
+      <article class="conversion-card">
+        <p class="status-label">Work request</p>
+        <h3><a href={leadIntakeForm.url}>Open intake form</a></h3>
+        <p>
+          Use the hosted intake form for new work requests, scheduling context,
+          support requests, or privacy requests.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Paid discovery</p>
+        <h3><a href={paidDiscoveryLink.url}>Open paid discovery</a></h3>
+        <p>
+          Use the Stripe-hosted payment link when a remote discovery session is
+          the right next step before custom scope.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Creator shop</p>
+        <h3><a href={fourthwallShop.url}>Open shop</a></h3>
+        <p>
+          Use Fourthwall for merch, memberships, storefront checkout, and
+          shop-order support.
+        </p>
+      </article>
+    </div>
+  </Band>
+
+  <Band variant="boundary" kicker="Private information" title="Do not send sensitive details through public paths." id="sensitive" columns>
+    <div>
+      <p>
+        Do not submit passwords, recovery codes, private keys, payment card
+        numbers, bank details, identity documents, protected health information,
+        emergency requests, or sensitive personal data through public intake or
+        public support paths.
+      </p>
+      <p>
+        If private files, account access, or regulated work becomes necessary,
+        it should wait for a separate written scope, approved transfer method,
+        and support boundary.
+      </p>
+    </div>
+  </Band>
+
+  <Band kicker="Support boundaries" title="Policies and support routing are public." id="policies" columns>
+    <div>
+      <p>
+        Review <a href="/privacy.html">Privacy</a>, <a href="/terms.html">Terms</a>,
+        and <a href="/refund-support.html">Refund and Support</a> before sending
+        additional context or paying for discovery.
+      </p>
+      <p>
+        This page is only a confirmation and routing surface. It does not prove
+        receipt, guarantee a response time, create a subscription, or activate a
+        larger project.
+      </p>
+    </div>
+  </Band>
+</BaseLayout>

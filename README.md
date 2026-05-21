@@ -17,6 +17,7 @@ drafts until separately approved for commit, push, deployment, and verification.
 - `privacy.html` - privacy posture for hosted intake, payment, and shop flows
 - `terms.html` - terms for using the current site and paid discovery lane
 - `refund-support.html` - refund, rescheduling, support, and provider routing
+- `next-steps.html` - noindex confirmation and provider-redirect routing page
 - `accessibility.html` - accessibility posture and known limits
 - `sitemap/index.html` - human-readable sitemap at `/sitemap`
 - `robots.txt` - crawler policy
