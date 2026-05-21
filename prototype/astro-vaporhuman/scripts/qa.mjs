@@ -18,6 +18,11 @@ function walk(dir) {
   });
 }
 
+function routeReferencePattern(route) {
+  const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?:^|["'(/=\\s])/?${escaped}(?:$|["')?#<\\s])`, "i");
+}
+
 if (!existsSync(dist)) {
   fail("dist/ is missing. Run npm run build before npm run qa.");
 } else {
@@ -109,6 +114,9 @@ if (!existsSync(dist)) {
     "about.html",
     "trust.html",
     "faq.html",
+    "privacy.html",
+    "terms.html",
+    "refund-support.html",
     "accessibility.html",
     "sitemap/index.html"
   ];
@@ -154,6 +162,51 @@ if (!existsSync(dist)) {
     }
   }
 
+  const privacyPath = join(dist, "privacy.html");
+  if (existsSync(privacyPath)) {
+    const privacy = readFileSync(privacyPath, "utf8");
+    for (const signal of [
+      "Tally hosts the work-intake form",
+      "Stripe hosts the paid-discovery checkout",
+      "Fourthwall hosts the creator shop",
+      "does not include analytics scripts"
+    ]) {
+      if (!privacy.includes(signal)) {
+        fail(`privacy page signal missing: ${signal}`);
+      }
+    }
+  }
+
+  const termsPath = join(dist, "terms.html");
+  if (existsSync(termsPath)) {
+    const terms = readFileSync(termsPath, "utf8");
+    for (const signal of [
+      "No emergency use",
+      "No guaranteed outcome",
+      "Payment does not create unlimited service",
+      "Refund and Support"
+    ]) {
+      if (!terms.includes(signal)) {
+        fail(`terms page signal missing: ${signal}`);
+      }
+    }
+  }
+
+  const refundPath = join(dist, "refund-support.html");
+  if (existsSync(refundPath)) {
+    const refund = readFileSync(refundPath, "utf8");
+    for (const signal of [
+      "Completed discovery sessions are generally not refundable",
+      "No emergency support",
+      "Use the active provider route",
+      "Fourthwall handles the creator shop"
+    ]) {
+      if (!refund.includes(signal)) {
+        fail(`refund/support page signal missing: ${signal}`);
+      }
+    }
+  }
+
   const shopPath = join(dist, "shop.html");
   if (existsSync(shopPath)) {
     const shop = readFileSync(shopPath, "utf8");
@@ -173,7 +226,7 @@ if (!existsSync(dist)) {
     const content = readFileSync(file, "utf8");
     const rel = relative(root, file);
     for (const staleRoute of staleRoutes) {
-      if (content.includes(staleRoute)) {
+      if (routeReferencePattern(staleRoute).test(content)) {
         fail(`stale non-production route reference found in ${rel}: ${staleRoute}`);
       }
     }

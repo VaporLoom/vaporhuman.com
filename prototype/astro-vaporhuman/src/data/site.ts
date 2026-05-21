@@ -26,9 +26,15 @@ export const site = {
     { href: "/social.html", label: "Social and share" },
     { href: "/about.html", label: "About" },
     { href: "/trust.html", label: "Trust boundary" },
-    { href: "/faq.html", label: "FAQ" }
+    { href: "/faq.html", label: "FAQ" },
+    { href: "/privacy.html", label: "Privacy" },
+    { href: "/terms.html", label: "Terms" },
+    { href: "/refund-support.html", label: "Refund and support" }
   ],
   footerFiles: [
+    { href: "/privacy.html", label: "Privacy policy" },
+    { href: "/terms.html", label: "Terms" },
+    { href: "/refund-support.html", label: "Refund and support" },
     { href: "/accessibility.html", label: "Accessibility" },
     { href: "/sitemap", label: "Site map" },
     { href: "/sitemap.xml", label: "XML sitemap" },
@@ -42,6 +48,9 @@ export const site = {
     "/about.html",
     "/trust.html",
     "/faq.html",
+    "/privacy.html",
+    "/terms.html",
+    "/refund-support.html",
     "/accessibility.html",
     "/sitemap"
   ]

@@ -14,6 +14,9 @@ drafts until separately approved for commit, push, deployment, and verification.
 - `about.html` - About VaporHuman
 - `trust.html` - trust boundary and non-claims
 - `faq.html` - current-site FAQ
+- `privacy.html` - privacy posture for hosted intake, payment, and shop flows
+- `terms.html` - terms for using the current site and paid discovery lane
+- `refund-support.html` - refund, rescheduling, support, and provider routing
 - `accessibility.html` - accessibility posture and known limits
 - `sitemap/index.html` - human-readable sitemap at `/sitemap`
 - `robots.txt` - crawler policy

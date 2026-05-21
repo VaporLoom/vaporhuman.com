@@ -1,0 +1,140 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+import { leadIntakeForm, paidDiscoveryLink, fourthwallShop } from "../data/conversion";
+
+const description =
+  "Terms for using VaporHuman, including work intake, paid discovery, provider boundaries, and non-claims.";
+
+const activeCards = [
+  {
+    title: "Work intake",
+    body:
+      "The Tally-hosted intake form helps route qualified requests. Submitting a form does not guarantee acceptance, response time, or project availability."
+  },
+  {
+    title: "Paid discovery",
+    body:
+      "The Stripe-hosted paid discovery session is a remote review of your request and a recommendation for the next practical step."
+  },
+  {
+    title: "Creator shop",
+    body:
+      "The Fourthwall-hosted shop is separate from VaporHuman service delivery. Fourthwall handles shop checkout, fulfillment, and related shop workflows."
+  }
+];
+
+const boundaryCards = [
+  {
+    title: "No emergency use",
+    body:
+      "Do not use VaporHuman for emergency, crisis, safety, medical, legal, financial, employment, identity, or regulated professional decisions."
+  },
+  {
+    title: "No guaranteed outcome",
+    body:
+      "Discovery, recommendations, site copy, assistant output, or workflow advice do not guarantee revenue, ranking, approval, compliance, or future project acceptance."
+  },
+  {
+    title: "Human responsibility",
+    body:
+      "You remain responsible for reviewing decisions, protecting private information, verifying facts, and deciding whether to use any recommendation."
+  }
+];
+---
+
+<BaseLayout title="Terms" description={description} canonicalPath="/terms.html" currentPath="/terms.html">
+  <PageHero
+    kicker="Terms"
+    title="Use VaporHuman with clear boundaries."
+    lede="These terms describe the current public site, hosted intake, hosted paid discovery, and provider boundaries."
+    body="The site is live, but it is still staged: service scope, payments, support, analytics, accounts, and provider integrations expand only through explicit gates."
+  />
+
+  <Band variant="status" kicker="Current date" title="Effective May 21, 2026." id="effective-date" columns>
+    <p>
+      By using vaporhuman.com, submitting the hosted intake form, opening the
+      Stripe paid-discovery link, or visiting the Fourthwall shop, you agree to
+      use these workflows within the limits described on this page.
+    </p>
+  </Band>
+
+  <Band variant="intro" kicker="Active workflows" title="What is available now." id="active">
+    <CardGrid cards={activeCards} three />
+  </Band>
+
+  <Band kicker="Non-claims" title="What VaporHuman does not promise." id="boundaries">
+    <CardGrid cards={boundaryCards} three />
+  </Band>
+
+  <Band variant="intro" kicker="Provider terms" title="Hosted providers have their own terms." id="providers">
+    <div class="conversion-grid">
+      <article class="conversion-card">
+        <p class="status-label">Intake provider</p>
+        <h3><a href={leadIntakeForm.url}>Tally</a></h3>
+        <p>
+          Tally hosts the intake form. Tally's terms are available at
+          <a href="https://tally.so/terms">tally.so/terms</a>.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Payment provider</p>
+        <h3><a href={paidDiscoveryLink.url}>Stripe</a></h3>
+        <p>
+          Stripe hosts the paid-discovery checkout. Stripe's service agreement
+          is available at <a href="https://stripe.com/legal/ssa">stripe.com/legal/ssa</a>.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Shop provider</p>
+        <h3><a href={fourthwallShop.url}>Fourthwall</a></h3>
+        <p>
+          Fourthwall hosts the shop. Fourthwall's terms are available at
+          <a href="https://fourthwall.com/terms-of-service">fourthwall.com/terms-of-service</a>.
+        </p>
+      </article>
+    </div>
+  </Band>
+
+  <Band variant="boundary" kicker="Paid discovery" title="Payment does not create unlimited service." id="paid-discovery" columns>
+    <div>
+      <p>
+        A paid discovery session covers a remote review and recommendation based
+        on the information available. It does not include implementation,
+        emergency support, professional certification, tax/legal/financial
+        advice, managed services, subscription access, or guaranteed acceptance
+        into a larger project.
+      </p>
+      <p>
+        Larger work should be scoped separately after intake and discovery.
+        Custom work may require a separate invoice, written scope, timeline,
+        access plan, and support boundary.
+      </p>
+    </div>
+  </Band>
+
+  <Band kicker="Your responsibilities" title="Use the site and providers honestly." id="responsibilities" columns>
+    <div>
+      <p>
+        You agree not to submit unlawful, abusive, misleading, infringing, or
+        sensitive material through the public intake form. You also agree not to
+        submit secrets, passwords, private keys, recovery codes, card numbers,
+        bank details, identity documents, or emergency requests.
+      </p>
+      <p>
+        If you pay through Stripe or buy through Fourthwall, use accurate
+        customer and payment information and review the provider-hosted checkout
+        before completing payment.
+      </p>
+    </div>
+  </Band>
+
+  <Band variant="status" kicker="Refunds and support" title="Support terms live on a separate policy page." id="support" columns>
+    <p>
+      Refund, rescheduling, support, and provider-resolution posture is described
+      at <a href="/refund-support.html">Refund and Support</a>.
+    </p>
+  </Band>
+</BaseLayout>

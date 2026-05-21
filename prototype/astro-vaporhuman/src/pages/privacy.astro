@@ -1,0 +1,144 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+import { leadIntakeForm, paidDiscoveryLink, fourthwallShop } from "../data/conversion";
+
+const description =
+  "Privacy policy for VaporHuman, including hosted intake, payment, and shop provider boundaries.";
+
+const dataCards = [
+  {
+    title: "Work intake",
+    body:
+      "Tally hosts the work-intake form. The form may ask for company/project details, contact details, service interest, buying stage, goals, message, and consent."
+  },
+  {
+    title: "Paid discovery",
+    body:
+      "Stripe hosts the paid-discovery checkout. Stripe processes payment details; VaporHuman does not receive or store full card data in this site."
+  },
+  {
+    title: "Creator shop",
+    body:
+      "Fourthwall hosts the merch and creator-commerce shop. Orders, memberships, shipping, and storefront checkout are handled through Fourthwall."
+  },
+  {
+    title: "Static site",
+    body:
+      "The VaporHuman source build does not include analytics scripts, tracking pixels, embedded forms, cookies, local storage, or account login."
+  }
+];
+
+const useCards = [
+  {
+    title: "Respond",
+    body:
+      "Use submitted contact and request details to review the request, reply, schedule discovery, or decide whether a larger scoped project makes sense."
+  },
+  {
+    title: "Deliver",
+    body:
+      "Use payment and service context to deliver paid discovery, keep basic business records, send receipts through providers, and support completed work."
+  },
+  {
+    title: "Protect",
+    body:
+      "Use records to prevent abuse, investigate provider/payment issues, maintain site reliability, and comply with applicable business obligations."
+  }
+];
+---
+
+<BaseLayout title="Privacy Policy" description={description} canonicalPath="/privacy.html" currentPath="/privacy.html">
+  <PageHero
+    kicker="Privacy"
+    title="Plain data boundaries for a hosted-provider site."
+    lede="VaporHuman keeps the public site static and uses hosted providers for intake, payment, and shop checkout."
+    body="This page explains what is active now, what is not active, and which providers handle the live workflows."
+  />
+
+  <Band variant="status" kicker="Current date" title="Effective May 21, 2026." id="effective-date" columns>
+    <p>
+      This policy applies to vaporhuman.com and the linked hosted-provider
+      workflows used for work intake, paid discovery, and the creator shop. It
+      is a practical operating notice, not legal advice.
+    </p>
+  </Band>
+
+  <Band variant="intro" kicker="What is collected" title="The live paths are hosted by providers." id="collected">
+    <CardGrid cards={dataCards} />
+  </Band>
+
+  <Band kicker="How information is used" title="Use stays tied to the request." id="use">
+    <CardGrid cards={useCards} three />
+  </Band>
+
+  <Band variant="intro" kicker="Provider links" title="Review the provider policies before using hosted flows." id="providers">
+    <div class="conversion-grid">
+      <article class="conversion-card">
+        <p class="status-label">Work intake</p>
+        <h3><a href={leadIntakeForm.url}>Tally</a></h3>
+        <p>
+          Tally hosts the work-intake form. Tally's privacy policy is available
+          at <a href="https://www.tally.inc/privacy">tally.inc/privacy</a>.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Paid discovery</p>
+        <h3><a href={paidDiscoveryLink.url}>Stripe</a></h3>
+        <p>
+          Stripe hosts the paid-discovery checkout. Stripe's privacy policy is
+          available at <a href="https://stripe.com/privacy">stripe.com/privacy</a>.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Shop</p>
+        <h3><a href={fourthwallShop.url}>Fourthwall</a></h3>
+        <p>
+          Fourthwall hosts the creator shop. Fourthwall's privacy policy is
+          available at <a href="https://fourthwall.com/privacy-policy">fourthwall.com/privacy-policy</a>.
+        </p>
+      </article>
+    </div>
+  </Band>
+
+  <Band variant="boundary" kicker="Do not submit" title="Keep sensitive material out of public intake." id="sensitive" columns>
+    <div>
+      <p>
+        Do not submit passwords, recovery codes, private keys, payment card
+        numbers, bank details, identity documents, protected health information,
+        emergency requests, or sensitive personal data through the public intake
+        form.
+      </p>
+      <p>
+        If a project later requires private documents or account access, that
+        should happen only after a separate scoped agreement and a safer transfer
+        method are approved.
+      </p>
+    </div>
+  </Band>
+
+  <Band kicker="Retention and requests" title="Records are kept only as long as needed for the work." id="retention" columns>
+    <div>
+      <p>
+        VaporHuman may keep intake, payment, service, and support records for as
+        long as needed to respond, deliver service, maintain business records,
+        resolve disputes, prevent abuse, or meet provider/legal obligations.
+      </p>
+      <p>
+        Until a public support email is established, use the
+        <a href={leadIntakeForm.url}>VaporHuman Work Intake</a> form for privacy
+        or support requests and include only the minimum context needed.
+      </p>
+    </div>
+  </Band>
+
+  <Band variant="status" kicker="Children and updates" title="This site is for adult business use." id="updates" columns>
+    <p>
+      VaporHuman is not directed to children. This policy may change as provider
+      flows, support channels, analytics, accounts, subscriptions, or dashboard
+      features are added through separate approval gates.
+    </p>
+  </Band>
+</BaseLayout>

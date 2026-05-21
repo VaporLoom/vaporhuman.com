@@ -1,0 +1,134 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+import { leadIntakeForm, paidDiscoveryLink, fourthwallShop } from "../data/conversion";
+
+const description =
+  "Refund and support policy for VaporHuman paid discovery, intake, and hosted provider workflows.";
+
+const supportCards = [
+  {
+    title: "Work intake",
+    body:
+      "For work-intake, privacy, support, or scheduling questions, use the Tally-hosted intake form and include only the minimum context needed."
+  },
+  {
+    title: "Paid discovery",
+    body:
+      "Stripe hosts the paid-discovery payment page and receipts. VaporHuman handles discovery scheduling and scope review after payment."
+  },
+  {
+    title: "Shop orders",
+    body:
+      "Fourthwall hosts the shop. Merch, memberships, shipping, and shop-order issues should be handled through Fourthwall's shop support flow."
+  }
+];
+
+const refundCards = [
+  {
+    title: "Before delivery",
+    body:
+      "If a paid discovery session cannot reasonably be scheduled or delivered, request a refund or reschedule review before the session is completed."
+  },
+  {
+    title: "After delivery",
+    body:
+      "Completed discovery sessions are generally not refundable unless there is a clear duplicate payment, provider error, or delivery issue."
+  },
+  {
+    title: "Custom work",
+    body:
+      "Larger scoped work, invoices, subscriptions, deposits, retainers, and suite services require separate written terms before activation."
+  }
+];
+---
+
+<BaseLayout title="Refund And Support" description={description} canonicalPath="/refund-support.html" currentPath="/refund-support.html">
+  <PageHero
+    kicker="Refund and support"
+    title="Support starts with the hosted intake path."
+    lede="VaporHuman has live intake and paid discovery, but no public email, account portal, subscription system, or live assistant support service yet."
+    body="This page explains how to route support questions, refund requests, shop issues, and provider problems while the service lane is still early."
+  />
+
+  <Band variant="status" kicker="Current date" title="Effective May 21, 2026." id="effective-date" columns>
+    <p>
+      This policy covers VaporHuman paid discovery and the linked hosted
+      provider paths. It does not replace the terms or support workflows of
+      Tally, Stripe, Fourthwall, PayPal, NameSilo, GitHub Pages, or any other
+      provider.
+    </p>
+  </Band>
+
+  <Band variant="intro" kicker="Where to go" title="Route support to the right host." id="routing">
+    <CardGrid cards={supportCards} three />
+  </Band>
+
+  <Band kicker="Paid discovery refunds" title="Refunds are reviewed against delivery state." id="refunds">
+    <CardGrid cards={refundCards} three />
+  </Band>
+
+  <Band variant="intro" kicker="Live links" title="Use the active provider route." id="links">
+    <div class="conversion-grid">
+      <article class="conversion-card">
+        <p class="status-label">Support intake</p>
+        <h3><a href={leadIntakeForm.url}>Open the intake form</a></h3>
+        <p>
+          Use this for work requests, scheduling context, support requests, or
+          privacy requests until a public support email is established.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Paid discovery</p>
+        <h3><a href={paidDiscoveryLink.url}>Open Stripe payment link</a></h3>
+        <p>
+          Stripe handles hosted checkout and receipts for the paid discovery
+          session.
+        </p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Creator shop</p>
+        <h3><a href={fourthwallShop.url}>Open Fourthwall shop</a></h3>
+        <p>
+          Fourthwall handles the creator shop, checkout, order support, and
+          fulfillment-related workflows.
+        </p>
+      </article>
+    </div>
+  </Band>
+
+  <Band variant="boundary" kicker="No emergency support" title="Do not use VaporHuman as urgent support." id="emergency" columns>
+    <div>
+      <p>
+        VaporHuman does not provide emergency, safety, medical, legal, financial,
+        employment, identity, payroll compliance, tax filing, or crisis support.
+        Do not submit urgent requests through the intake form.
+      </p>
+      <p>
+        Payment, checkout, domain, DNS, provider, and technical issues may depend
+        on third-party support queues and cannot be guaranteed to resolve within
+        a specific timeframe.
+      </p>
+    </div>
+  </Band>
+
+  <Band kicker="How to request help" title="Include only enough detail to identify the issue." id="request-help" columns>
+    <div>
+      <p>
+        For VaporHuman paid-discovery support, submit a request through the
+        <a href={leadIntakeForm.url}>work-intake form</a>. Include the same name
+        or email used for payment and a short description of the issue. Do not
+        submit full card numbers, bank details, passwords, recovery codes, or
+        private keys.
+      </p>
+      <p>
+        For Fourthwall shop issues, use the shop's Fourthwall support path. For
+        Stripe payment receipt issues, review the Stripe-hosted receipt or
+        payment confirmation first, then contact VaporHuman with minimal
+        identifying context.
+      </p>
+    </div>
+  </Band>
+</BaseLayout>
