@@ -10,6 +10,125 @@ The current public artifact is static-only. Existing pages and README state that
 
 This packet does not change that. It is a planning surface only.
 
+Local prototype note, 2026-05-21: login, currency, language, admin dashboard,
+analytics, billing, support search, and account behavior should be treated as
+application functionality, not content pages to polish indefinitely. The Astro
+draft may show disabled header controls and architecture packets for these
+surfaces, but it should not add static `/login.html` or `/dashboard.html`
+routes as substitutes for real app work. These controls must not include forms,
+provider redirects, cookies, storage, tags, external collection, or live
+behavior until a separate implementation and deployment gate approves them.
+
+Membership note, 2026-05-21: the desired model is free-first membership with
+paid tiers hidden from primary presentation. Pricing and paid-tier options
+should appear only after a member reaches a documented rate limit. Billing,
+checkout, pricing copy, entitlements, receipts, taxes, cancellation, and
+support remain separate approval gates.
+
+Support note, 2026-05-21: a future support knowledge base should start with
+searchable articles, topic browsing, common task paths, and guided escalation.
+Local prototypes may include support pages and article routes as noindex static
+content only. Support ticket capture, live chat, article feedback, query logs,
+external search providers, and member-specific support history remain separate
+approval gates.
+
+Support chat bot note, 2026-05-21: a support bot can fit the future
+architecture if it sits behind the knowledge base, cites known support
+articles, asks for minimal context, and escalates unresolved or sensitive
+issues. It must not store transcripts, call a model, read account context,
+create tickets, or answer from private data until provider, privacy, retention,
+prompt, retrieval, and human-escalation gates are approved.
+
+Streaming integration note, 2026-05-21: VaporStream/VaporTwitch member support
+may later cover generated emojis, overlays, and direct upload workflows. Keep
+this as routed support taxonomy in `vaporhuman.com`; do not implement platform
+API upload, account authorization, moderation, or live placement from this repo
+without a separate cross-repo/provider gate.
+
+VaporArch improvement note, 2026-05-21: VaporArch may later help by producing
+research-backed improvement proposals for support articles, rate-limit copy,
+streaming workflows, safety boundaries, or product friction. In this repo,
+model that as a proposal queue only. Auto-publish is a valid future
+VaporArch capability, but it needs exact publish surface, source set, evidence
+threshold, owner approval model, rollback, sensitive-topic exclusions, and
+post-publish monitoring before activation. Auto-research jobs, provider reads,
+GitHub issue mutation, cross-repo edits, and auto-publication require separate
+approval gates and source/evidence review.
+
+Production-source note, 2026-05-21: the Astro draft should stay lean enough to
+serve as production source. Removed planning/prototype routes include
+`/login.html`, `/dashboard.html`, `/architecture.html`, `/experience.html`,
+`/support.html`, support article routes, `/continuity.html`, and
+`/donations.html`. The production source may include `/work.html` as the public
+offer and private-intake route, but it must not add a form, public email
+address, CRM endpoint, checkout link, payment provider, analytics script, or
+live account behavior until the exact provider/data gates are approved. The
+`npm run qa` command is allowed as local static-output verification only; it
+checks generated files for scripts, forms, storage, tracking endpoints, OAuth
+endpoints, stale non-production routes, and sitemap consistency. It does not
+prove legal, privacy, deployment, provider, or public behavior readiness.
+
+OpenClaw handoff note, 2026-05-21: keep OpenClaw in the loop through sanitized
+local handoff packets rather than mutating OpenClaw config, queues, provider
+accounts, GitHub metadata, DNS, hosting, or deployment state. Current handoff:
+`docs/handoffs/openclaw-production-publishing-provider-handoff.md`.
+
+Fourthwall note, 2026-05-21: the user provided an existing Fourthwall shop URL
+linked to StreamElements: `https://irievision-co-shop.fourthwall.com/`. It is
+safe for the static source to link to that external storefront as a commerce
+route because checkout remains hosted by Fourthwall. Connecting
+`shop.vaporhuman.com` to Fourthwall requires Fourthwall dashboard access and DNS
+changes, so it remains a separate provider/DNS gate.
+
+Audience/UX note, 2026-05-21: analytics, graphs, demographics, revenue,
+provider readiness, support queues, and operational metrics are admin-only
+business intelligence surfaces. Client/member-facing surfaces should show only
+approved summaries, account states, support answers, rate-limit messages,
+upgrade prompts, and creation workflows that have passed UX-agent review. The
+desired member experience should feel magical and outcome-oriented, but uploads,
+publishing, billing, account changes, and platform placement still require
+explicit user approval and rollback paths.
+
+UX review should cover audience fit, promise control, approval moments, empty
+states, limit states, accessibility, and trust language before member-facing
+surfaces move out of local prototype status.
+
+Audience field recommendation, 2026-05-21: add `Audience` as a local dry-run
+routing field before changing GitHub. Evidence: this packet now needs different
+decisions for public pages, member/client UX, admin-only business intelligence,
+internal agent automation, and provider/platform integrations. Existing project
+practice already uses `Exposure` for privacy/public-review posture, but
+`Exposure` does not tell an agent who the surface is for. Recommended local
+single-select values are `Public`, `Member / Client`, `Admin / Operator`,
+`Internal Agent`, `Provider / Integration`, `Mixed / Needs Split`, and
+`Unknown / Review Needed`.
+
+Do not create or mutate a GitHub field yet. GitHub Projects single-select
+fields are filterable and issue fields can provide structured organization
+metadata, but organization issue fields are in public preview, projects have a
+field budget, and this workspace already has core operating fields such as
+`Status`, `Priority`, `Area`, `Department`, `System`, `Work Type`, and
+`Exposure`. A GitHub `Audience` field should wait for a read-only schema
+inventory, option-name review, null/backfill policy, and exact provider
+mutation gate.
+
+Local proof criteria: every architecture lane should carry one primary
+`Audience` value before promotion; `Mixed / Needs Split` should trigger either
+a split packet or explicit owner review; `Admin / Operator` should keep
+dashboards, demographics, revenue, and operational metrics out of member
+navigation; `Member / Client` should trigger UX review; provider-facing work
+should trigger provider authorization and rollback review; and GitHub field
+mutation should wait until the field proves useful across at least three active
+packets without option churn.
+
+Implementation packet note, 2026-05-21: the local architecture prototype may
+also list gated implementation packets for identity, admin analytics,
+rate-limit pricing, support search, support bot behavior, streaming asset
+workflows, and VaporArch proposals. These packets are routing contracts, not
+implementation approval. Each packet should preserve owner, audience, Exposure,
+local proof, and blocked-until gates before any code, provider, GitHub, billing,
+analytics, model, platform, or publishing behavior is activated.
+
 Planning starts as a local draft because the target remote and public
 site are public-facing surfaces. Local draft status is not meant to be a
 permanent state. It is the holding phase before evidence proves the packet is
@@ -39,6 +158,8 @@ This packet does not approve:
 - hosting log reads, visitor-data reads, IP/user-agent/referrer analysis, demographic analysis, or provider exports
 - language dropdowns, language pages, translated public copy, locale routing, nationality selectors, or footer changes
 - forms, login, accounts, contact capture, public email, payments, donation flows, or dashboards
+- public pricing pages, checkout, billing, receipts, paid entitlements, or upgrade prompts outside a rate-limit context
+- support chat bots, model calls, transcript storage, ticket creation, article feedback capture, or automated improvement publishing
 - DNS, hosting, deployment, GitHub Pages settings, commits, pushes, issue closeout, or GitHub metadata changes
 
 ## Privacy posture

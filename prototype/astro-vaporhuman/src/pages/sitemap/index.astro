@@ -1,0 +1,39 @@
+---
+import Band from "../../components/Band.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import PageHero from "../../components/PageHero.astro";
+
+const description = "Human-readable sitemap for VaporHuman.";
+const cards = [
+  { title: "Home", href: "/", body: "Landing page for VaporHuman private AI continuity systems." },
+  { title: "Work with VaporHuman", href: "/work.html", body: "Production offer and private intake route." },
+  { title: "Shop", href: "/shop.html", body: "Fourthwall-powered shop and support route." },
+  { title: "Social and share", href: "/social.html", body: "Static social share links for public pages." },
+  { title: "About", href: "/about.html", body: "What VaporHuman is and why it exists." },
+  { title: "Trust boundary", href: "/trust.html", body: "What the site claims, refuses to claim, and leaves to human judgment." },
+  { title: "FAQ", href: "/faq.html", body: "Short answers for the current site." },
+  { title: "Accessibility", href: "/accessibility.html", body: "Current accessibility posture and known limits." },
+  { title: "XML sitemap", href: "/sitemap.xml", body: "Machine-readable sitemap for crawlers." }
+];
+---
+
+<BaseLayout title="Site Map" description={description} canonicalPath="/sitemap">
+  <PageHero
+    kicker="Site map"
+    title="Production pages, kept lean."
+    lede="A human-readable list of the current public pages and site files."
+  />
+
+  <Band variant="intro" kicker="Pages" title="Human-readable site map" id="pages-title">
+    <CardGrid cards={cards} />
+  </Band>
+
+  <Band variant="status" kicker="Site files" title="Small and static." id="files-title" columns>
+    <p>
+      This site map is a normal HTML page. The crawler-oriented version lives at
+      <a href="/sitemap.xml">sitemap.xml</a>, and crawler policy lives at
+      <a href="/robots.txt">robots.txt</a>.
+    </p>
+  </Band>
+</BaseLayout>

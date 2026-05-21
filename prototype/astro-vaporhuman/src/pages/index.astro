@@ -1,0 +1,91 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+---
+
+<BaseLayout
+  title="VaporHuman"
+  canonicalPath="/"
+  currentPath="/"
+>
+  <PageHero
+    home
+    kicker="Private AI continuity systems"
+    title="VaporHuman"
+    lede="Turn scattered AI work into a private, usable system with trust boundaries, memory, handoffs, and human approval built in."
+    body="VaporHuman helps owner-operated teams and serious builders make AI assistance practical without losing control of context, decisions, or public claims."
+  >
+    <div class="button-row" aria-label="Featured pages">
+      <a class="button" href="/work.html">Work with VaporHuman</a>
+      <a class="button button--ghost" href="/trust.html">Review the trust boundary</a>
+    </div>
+  </PageHero>
+
+  <Band
+    variant="intro"
+    kicker="What it does"
+    title="A private operating layer for AI work."
+    id="questions-title"
+  >
+    <ol class="question-list">
+      <li>Keep important context reusable across tools, sessions, and assistants.</li>
+      <li>Make decisions, approvals, and stop lines visible before work goes public.</li>
+      <li>Turn messy assistant output into repeatable workflows people can use.</li>
+    </ol>
+  </Band>
+
+  <Band kicker="Offer" title="Built for people already using AI seriously." id="what-title" columns>
+    <ul class="principles">
+      <li>assistant workflow audits</li>
+      <li>private continuity maps</li>
+      <li>repo and product handoff systems</li>
+      <li>support knowledge architecture</li>
+      <li>approval gates for public work</li>
+      <li>operator dashboards after provider review</li>
+    </ul>
+  </Band>
+
+  <Band
+    variant="boundary"
+    kicker="What this is not"
+    title="Not A Substitute For Human Judgment"
+    id="not-title"
+  >
+    <p>
+      VaporHuman is not a person, therapist, doctor, lawyer, accountant,
+      employer, identity service, emergency service, or authority over human
+      decisions.
+    </p>
+    <p>
+      It does not promise that AI is always right, always safe, private by
+      default, always available, or a substitute for human judgment.
+    </p>
+  </Band>
+
+  <Band kicker="Why it exists" title="Keep The Human Visible" id="why-title" columns>
+    <div>
+      <p>AI work gets expensive when every session restarts from zero. VaporHuman goes the other way.</p>
+      <p>
+        The goal is to make assistant systems more useful in practice: what
+        they know, what they do not know, what they are allowed to do, what
+        should stay private, and when a human needs to approve the next move.
+      </p>
+      <p>
+        Start with <a href="/work.html">Work with VaporHuman</a>, then read the
+        <a href="/trust.html">Trust boundary</a>.
+      </p>
+    </div>
+  </Band>
+
+  <Band variant="status" kicker="Private beta" title="Useful before it is loud." id="status-title" columns>
+    <div>
+      <p>
+        VaporHuman should become useful first in private, controlled workflows,
+        then graduate public lead capture, payments, and analytics only after
+        the provider gates are selected and verified.
+      </p>
+      <p class="principle">Useful first. Honest always. Human in charge.</p>
+    </div>
+  </Band>
+</BaseLayout>

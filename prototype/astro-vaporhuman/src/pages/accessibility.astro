@@ -1,0 +1,48 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+
+const description = "Accessibility posture for the VaporHuman site.";
+const cards = [
+  { title: "Semantic structure", body: "Pages use headings, landmarks, lists, and descriptive link text where practical." },
+  { title: "No hidden interactions", body: "There are no forms, popups, account flows, or client-side app controls." },
+  { title: "Readable defaults", body: "The design favors large type, strong contrast, and responsive layouts." },
+  { title: "Reviewable content", body: "The site is intentionally simple so issues can be found and corrected." }
+];
+---
+
+<BaseLayout title="Accessibility" description={description} canonicalPath="/accessibility.html">
+  <PageHero
+    kicker="Accessibility"
+    title="Readable, simple, and still improving."
+    lede="VaporHuman should be easy to read, navigate, review, and correct."
+  />
+
+  <Band variant="intro" kicker="Accessibility posture" title="The site should be readable, navigable, and honest about its limits." id="access-title" columns>
+    <div>
+      <p>
+        VaporHuman is built with static output, semantic headings, text-first
+        content, visible links, keyboard-friendly navigation, and no tracking or
+        third-party embeds.
+      </p>
+      <p>
+        This is not a formal conformance certification. It is a current posture
+        and improvement target for a small site.
+      </p>
+    </div>
+  </Band>
+
+  <Band kicker="Practices" title="Current accessibility-oriented choices" id="practices-title">
+    <CardGrid cards={cards} />
+  </Band>
+
+  <Band variant="status" kicker="Known limits" title="Feedback path is not public yet." id="limits-title" columns>
+    <p>
+      No public email or contact form is active yet. Until the email lane is
+      verified and approved, accessibility feedback collection is not published
+      on this site.
+    </p>
+  </Band>
+</BaseLayout>

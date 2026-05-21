@@ -1,0 +1,26 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  lede?: string;
+  body?: string;
+  home?: boolean;
+}
+
+const { kicker, title, lede, body, home = false } = Astro.props;
+const Tag = home ? "section" : "section";
+---
+
+<Tag class={home ? "hero" : "page-hero"} aria-labelledby="page-title">
+  <div class={home ? "hero__content" : "wrap page-hero__grid"}>
+    <div>
+      <p class="kicker">{kicker}</p>
+      <h1 id="page-title">{title}</h1>
+    </div>
+    <div>
+      {lede && <p class="lede">{lede}</p>}
+      {body && <p>{body}</p>}
+      <slot />
+    </div>
+  </div>
+</Tag>

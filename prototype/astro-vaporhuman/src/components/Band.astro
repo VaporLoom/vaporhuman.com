@@ -1,0 +1,34 @@
+---
+interface Props {
+  kicker?: string;
+  title?: string;
+  id?: string;
+  variant?: "default" | "intro" | "boundary" | "status";
+  columns?: boolean;
+}
+
+const {
+  kicker,
+  title,
+  id = title ? title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : undefined,
+  variant = "default",
+  columns = false
+} = Astro.props;
+
+const classes = ["band", variant !== "default" ? `band--${variant}` : ""]
+  .filter(Boolean)
+  .join(" ");
+const innerClass = columns ? "wrap two-column" : "wrap";
+---
+
+<section class={classes} aria-labelledby={id}>
+  <div class={innerClass}>
+    {(kicker || title) && (
+      <div>
+        {kicker && <p class="kicker">{kicker}</p>}
+        {title && <h2 id={id}>{title}</h2>}
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

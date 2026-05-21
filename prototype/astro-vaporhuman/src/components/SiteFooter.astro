@@ -1,0 +1,67 @@
+---
+import { site } from "../data/site";
+---
+
+<footer class="site-footer">
+  <div class="footer-wrap">
+    <section class="footer-notes" aria-label="Important site notes">
+      <p>
+        VaporHuman designs private AI continuity systems. Site copy, page
+        structure, availability, and future features may change as the product
+        lane develops.
+      </p>
+      <p>
+        This site does not provide medical, legal, financial, employment,
+        identity, emergency, or professional advice. Assistant output should
+        support human judgment, not replace it.
+      </p>
+      <p>
+        No forms, login, checkout, payment flow, analytics, tracking scripts,
+        contact capture, public email address, donation flow, or live assistant
+        service are active in this source build.
+      </p>
+    </section>
+
+    <nav class="footer-grid" aria-label="Footer navigation">
+      <section>
+        <h2>Explore</h2>
+        <ul>
+          {site.footerExplore.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h2>Current posture</h2>
+        <ul>
+          <li>Production pages first</li>
+          <li>Private intake before automation</li>
+          <li>Provider gates before capture</li>
+          <li>Payments need exact approval</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Trust reminders</h2>
+        <ul>
+          <li>Human approval matters</li>
+          <li>Memory can be incomplete</li>
+          <li>Claims should be checkable</li>
+          <li>Private context stays private</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Site files</h2>
+        <ul>
+          {site.footerFiles.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </section>
+    </nav>
+
+    <div class="footer-bottom">
+      <p>Copyright &copy; 2026 VaporHuman. All rights reserved.</p>
+      <p>United States</p>
+    </div>
+  </div>
+</footer>

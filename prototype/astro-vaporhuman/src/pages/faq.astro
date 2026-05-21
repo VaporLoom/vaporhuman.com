@@ -1,0 +1,36 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+
+const description = "Frequently asked questions about the current VaporHuman site.";
+const cards = [
+  { title: "What is VaporHuman?", body: "A trust and continuity surface for explaining human-centered assistant systems." },
+  { title: "Is this a product launch?", body: "No. This is an early site, not a service availability announcement." },
+  { title: "Can I create an account?", body: "No. There is no login, dashboard, account system, or live assistant service here." },
+  { title: "Can I contact VaporHuman?", body: "Not through this site yet. No public email address or contact form is active." },
+  { title: "Are donations open?", body: "No. Donations, payments, fundraising, and checkout flows are not active." },
+  { title: "Does this provide professional advice?", body: "No. It is not medical, legal, financial, employment, identity, or emergency advice." }
+];
+---
+
+<BaseLayout title="FAQ" description={description} canonicalPath="/faq.html" currentPath="/faq.html">
+  <PageHero
+    kicker="FAQ"
+    title="Current answers, without overclaiming."
+    lede="A small set of answers for what this site is, what it is not, and what is not active yet."
+  />
+
+  <Band variant="intro" kicker="FAQ" title="Short answers for the current site." id="faq-title">
+    <CardGrid cards={cards} />
+  </Band>
+
+  <Band variant="boundary" kicker="Still true" title="The human remains responsible for decisions." id="boundary-title" columns>
+    <p>
+      VaporHuman can describe safer assistant patterns, but it does not make AI
+      output automatically true, safe, complete, private, or appropriate for
+      every context.
+    </p>
+  </Band>
+</BaseLayout>

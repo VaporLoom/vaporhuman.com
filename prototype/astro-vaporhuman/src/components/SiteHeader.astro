@@ -1,0 +1,49 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = "/" } = Astro.props;
+---
+
+<header class="site-header" aria-label="Site header">
+  <a class="brand" href="/">VaporHuman</a>
+  <div class="header-actions">
+    <nav class="site-nav" aria-label="Primary navigation">
+      {site.nav.map((item) => (
+        <a
+          href={item.href}
+          aria-current={currentPath === item.href ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <nav class="utility-nav" aria-label="Account and preference navigation">
+      {site.utilityActions.map((item) => (
+        <button
+          class="utility-link"
+          type="button"
+          disabled
+          data-action={item.action}
+          aria-label={`${item.label} application action placeholder`}
+        >
+          {item.label}
+        </button>
+      ))}
+      {site.utilityControls.map((control) => (
+        <button
+          class="utility-select"
+          type="button"
+          disabled
+          aria-label={`${control.label} selector placeholder`}
+        >
+          <span>{control.value}</span>
+          <span aria-hidden="true">v</span>
+        </button>
+      ))}
+    </nav>
+  </div>
+</header>

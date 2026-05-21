@@ -1,0 +1,52 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { sharePages } from "../data/conversion";
+import { site } from "../data/site";
+
+const description =
+  "Share VaporHuman pages and social-ready public links without tracking scripts or embeds.";
+---
+
+<BaseLayout title="Social And Share" description={description} canonicalPath="/social.html" currentPath="/social.html">
+  <PageHero
+    kicker="Social"
+    title="Share VaporHuman without adding tracking scripts."
+    lede="Static share links for the pages that are ready to be public-facing."
+    body="This page does not embed social feeds, pixels, forms, or analytics. Outbound share links open the selected platform with the public page URL."
+  />
+
+  <Band variant="intro" kicker="Share pages" title="Social-ready links." id="share-pages">
+    <div class="share-grid">
+      {sharePages.map((share) => {
+        const url = new URL(share.path, site.origin).toString();
+        const encodedUrl = encodeURIComponent(url);
+        const encodedText = encodeURIComponent(`${share.title} | VaporHuman`);
+        return (
+          <article class="share-card">
+            <h3>{share.title}</h3>
+            <p>{share.body}</p>
+            <p class="share-url">{url}</p>
+            <div class="share-actions">
+              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`} rel="noopener noreferrer">LinkedIn</a>
+              <a href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`} rel="noopener noreferrer">X</a>
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`} rel="noopener noreferrer">Facebook</a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </Band>
+
+  <Band variant="status" kicker="Social accounts" title="Account handles wait for ownership proof." id="social-accounts" columns>
+    <div>
+      <p>
+        Social profiles, pinned posts, conversion tracking, and paid promotion
+        should wait until account ownership, brand language, moderation, and
+        measurement policy are approved.
+      </p>
+      <p class="principle">Share links now. Social automation later.</p>
+    </div>
+  </Band>
+</BaseLayout>

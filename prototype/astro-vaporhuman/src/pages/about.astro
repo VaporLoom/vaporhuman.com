@@ -1,0 +1,72 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+
+const description =
+  "About VaporHuman: a plain-language trust and continuity surface for human-centered AI assistant systems.";
+
+const focusCards = [
+  { title: "Boundaries", body: "What the assistant may do, what it must not do, and when the human decides." },
+  { title: "Memory", body: "Useful continuity without pretending notes, summaries, or retrieval are perfect." },
+  { title: "Handoffs", body: "Clear transitions between humans, agents, tools, repos, and future replacements." },
+  { title: "Plain language", body: "Explanations that normal people can challenge, correct, and improve." }
+];
+
+const directoryCards = [
+  { title: "Newsroom", body: "No press releases or media announcements are active yet. Future updates should be dated, sourced, and easy to verify." },
+  { title: "VaporHuman Leadership", body: "No public leadership roster is published yet. Any future roster should separate human operators from assistant personas." },
+  { title: "Career Opportunities", body: "No hiring, recruiting, contractor, or employment opportunities are open through this site." },
+  { title: "Investors", body: "No investment offering, fundraising round, securities claim, or investor-relations program is active here." },
+  { title: "Ethics & Compliance", body: "The current posture is simple: clear boundaries, no professional advice claims, no hidden data collection, and human approval for sensitive actions." },
+  { title: "Events", body: "No public events, webinars, workshops, or appearances are scheduled through this site yet." },
+  { title: "Contact VaporHuman", body: "No public email address or contact form is active yet. Contact paths should wait for verified email posture and publication approval." }
+];
+---
+
+<BaseLayout title="About VaporHuman" description={description} canonicalPath="/about.html" currentPath="/about.html">
+  <PageHero
+    kicker="About"
+    title="A human layer for assistant systems."
+    lede="VaporHuman is for the parts of AI work that need clarity, consent, memory, and handoff discipline."
+    body="It is not trying to make an assistant sound more human. It is trying to keep the actual human visible."
+  />
+
+  <Band variant="intro" kicker="Why this exists" title="AI work needs a readable contract." id="origin-title" columns>
+    <div>
+      <p>
+        Assistants can be useful, but usefulness is not the same as trust. A
+        system should make it easy to see what it is doing, what it is
+        remembering, what it is guessing, and what still needs human judgment.
+      </p>
+      <p>
+        VaporHuman gives that work a name and a public place to explain the
+        posture before making bigger claims about products, services, accounts,
+        or availability.
+      </p>
+    </div>
+  </Band>
+
+  <Band kicker="Focus areas" title="What VaporHuman pays attention to" id="focus-title">
+    <CardGrid cards={focusCards} />
+  </Band>
+
+  <Band variant="intro" kicker="About VaporHuman" title="Useful sections, without pretending they are bigger than they are." id="about-directory-title">
+    <CardGrid cards={directoryCards} directory />
+  </Band>
+
+  <Band variant="boundary" kicker="Current state" title="Early, static public output, and deliberately modest." id="status-title" columns>
+    <div>
+      <p>
+        This site is currently a trust surface. It does not collect messages,
+        accept payments, run analytics, provide professional advice, or announce
+        a public service offering.
+      </p>
+      <p>
+        That restraint is intentional. The first job is to explain the trust
+        boundary clearly before adding anything more powerful.
+      </p>
+    </div>
+  </Band>
+</BaseLayout>

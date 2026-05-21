@@ -1,0 +1,27 @@
+---
+import type { Card } from "../data/site";
+
+interface Props {
+  cards: Card[];
+  three?: boolean;
+  directory?: boolean;
+}
+
+const { cards, three = false, directory = false } = Astro.props;
+const classes = [
+  "card-grid",
+  three ? "card-grid--three" : "",
+  directory ? "about-directory" : ""
+].filter(Boolean).join(" ");
+---
+
+<div class={classes}>
+  {cards.map((card) => (
+    <article class="card">
+      <h3>
+        {card.href ? <a href={card.href}>{card.title}</a> : card.title}
+      </h3>
+      <p>{card.body}</p>
+    </article>
+  ))}
+</div>

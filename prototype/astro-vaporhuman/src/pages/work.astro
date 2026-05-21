@@ -1,0 +1,144 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+import {
+  checkoutTargets,
+  conversionGates,
+  intakeFields,
+  productSelections,
+  providerRecommendations
+} from "../data/conversion";
+
+const description =
+  "Work with VaporHuman on private AI continuity systems, assistant workflow audits, and trust-aware handoff design.";
+
+const offerCards = [
+  {
+    title: "Assistant workflow audit",
+    body:
+      "Map what your assistants are doing now, where context is leaking, where sessions restart, and where human approval needs to be clearer."
+  },
+  {
+    title: "Private continuity system",
+    body:
+      "Turn scattered notes, repo state, operating rules, and handoffs into a durable assistant-ready workspace."
+  },
+  {
+    title: "Product and support architecture",
+    body:
+      "Design knowledge base, support bot, dashboard, rate-limit, and member-flow boundaries before providers are connected."
+  },
+  {
+    title: "Launch readiness review",
+    body:
+      "Prepare public pages, lead paths, payment gates, analytics posture, and rollback checks before release."
+  }
+];
+
+const fitCards = [
+  {
+    title: "Good fit",
+    body:
+      "You already use AI in real work and need continuity, decision control, private context handling, or repeatable workflows."
+  },
+  {
+    title: "Not a fit",
+    body:
+      "You need emergency help, regulated professional advice, hidden tracking, spam outreach, or a system that pretends AI is the decision-maker."
+  },
+  {
+    title: "Private first",
+    body:
+      "The first production lane should be used internally and with controlled clients before broad public automation."
+  }
+];
+---
+
+<BaseLayout title="Work With VaporHuman" description={description} canonicalPath="/work.html" currentPath="/work.html">
+  <PageHero
+    kicker="Work with VaporHuman"
+    title="Build the AI workflow people can actually use."
+    lede="Private continuity, trust boundaries, and handoff systems for serious AI-assisted work."
+    body="The offer is practical: make assistant work restartable, reviewable, and safe enough to use in real operations before adding public automation."
+  >
+    <div class="button-row" aria-label="Work with VaporHuman actions">
+      <a class="button" href="#private-intake">Start private intake</a>
+      <a class="button button--ghost" href="/shop.html">Visit the shop</a>
+      <a class="button button--ghost" href="/trust.html">Check the boundary</a>
+    </div>
+  </PageHero>
+
+  <Band variant="intro" kicker="Services" title="What VaporHuman can package." id="services-title">
+    <CardGrid cards={offerCards} />
+  </Band>
+
+  <Band kicker="Fit" title="Designed for controlled, high-context work." id="fit-title">
+    <CardGrid cards={fitCards} three />
+  </Band>
+
+  <Band variant="status" kicker="Private intake" title="Use it privately first, then open the funnel." id="private-intake" columns>
+    <div>
+      <p>
+        The right next product step is a private intake lane: one approved owner,
+        one approved contact path, one approved payment or invoice path, and a
+        clear record of what the client wants VaporHuman to help build.
+      </p>
+      <p>
+        Public forms, checkout, CRM, analytics, and email capture are not wired
+        in this source build yet. They should be connected only after the exact
+        providers and data policy are approved.
+      </p>
+      <p class="principle">Remote-private first. Public automation second.</p>
+    </div>
+  </Band>
+
+  <Band kicker="Intake shape" title="Lead fields ready for the provider gate." id="intake-fields">
+    <div class="intake-preview" aria-label="Future lead intake fields">
+      {intakeFields.map((field) => (
+        <article class="field-shell">
+          <p class="status-label">{field.label}</p>
+          <p>{field.example}</p>
+        </article>
+      ))}
+    </div>
+  </Band>
+
+  <Band variant="intro" kicker="Selections" title="Product or service routing." id="service-selection">
+    <div class="selection-strip" aria-label="Future product and service selections">
+      {productSelections.map((selection) => <span>{selection}</span>)}
+    </div>
+  </Band>
+
+  <Band kicker="Providers" title="Fastest path to leads and income." id="provider-plan">
+    <div class="conversion-grid">
+      {providerRecommendations.map((item) => (
+        <article class="conversion-card">
+          <p class="status-label">{item.status}</p>
+          <h3>{item.title}</h3>
+          <p><strong>{item.provider}</strong></p>
+          <p>{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </Band>
+
+  <Band kicker="Checkout" title="Income paths, staged for activation." id="checkout-targets">
+    <div class="checkout-grid">
+      {checkoutTargets.map((target) => (
+        <article class="checkout-card">
+          <p class="status-label">{target.status}</p>
+          <h3>{target.title}</h3>
+          <p>{target.body}</p>
+        </article>
+      ))}
+    </div>
+  </Band>
+
+  <Band variant="boundary" kicker="Provider gates" title="Before leads or money move." id="conversion-gates">
+    <ol class="gate-list">
+      {conversionGates.map((gate) => <li>{gate}</li>)}
+    </ol>
+  </Band>
+</BaseLayout>

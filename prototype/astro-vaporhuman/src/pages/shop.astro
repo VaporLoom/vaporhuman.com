@@ -1,0 +1,65 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { fourthwallShop, shopActions } from "../data/conversion";
+
+const description =
+  "Shop and support VaporHuman through the existing Fourthwall storefront linked to StreamElements.";
+---
+
+<BaseLayout title="Shop" description={description} canonicalPath="/shop.html" currentPath="/shop.html">
+  <PageHero
+    kicker="Shop"
+    title="Support the work through the live Fourthwall shop."
+    lede="The fastest income path is the shop that already exists."
+    body="Fourthwall handles the storefront and checkout externally. VaporHuman can promote it now while service checkout, donations, and crowdfunding are prepared through separate provider gates."
+  >
+    <div class="button-row" aria-label="Shop actions">
+      <a class="button" href={fourthwallShop.url} rel="noopener noreferrer">Visit the shop</a>
+      <a class="button button--ghost" href="/work.html">Work with VaporHuman</a>
+    </div>
+  </PageHero>
+
+  <Band variant="intro" kicker="Live storefront" title="Fourthwall is the first active commerce lane." id="storefront-title">
+    <div class="conversion-grid">
+      <article class="conversion-card">
+        <p class="status-label">{fourthwallShop.status}</p>
+        <h3>{fourthwallShop.title}</h3>
+        <p>{fourthwallShop.body}</p>
+        <p class="share-url">{fourthwallShop.url}</p>
+      </article>
+      <article class="conversion-card">
+        <p class="status-label">Connected platform</p>
+        <h3>{fourthwallShop.connectedPlatform}</h3>
+        <p>
+          Purchase and membership alerts can route through StreamElements after
+          the Fourthwall app connection and overlay settings are verified.
+        </p>
+      </article>
+    </div>
+  </Band>
+
+  <Band kicker="Next shop moves" title="Promote now, brand the domain next." id="shop-actions">
+    <div class="checkout-grid">
+      {shopActions.map((action) => (
+        <article class="checkout-card">
+          <h3>{action.title}</h3>
+          <p>{action.body}</p>
+        </article>
+      ))}
+    </div>
+  </Band>
+
+  <Band variant="status" kicker="Custom domain" title="Use a shop subdomain." id="custom-domain" columns>
+    <div>
+      <p>
+        Use <strong>{fourthwallShop.futureDomain}</strong> for Fourthwall so
+        vaporhuman.com can stay focused on the main site, service intake, trust
+        posture, and future suite routing.
+      </p>
+      <p>{fourthwallShop.domainGate}</p>
+      <p class="principle">Shop link now. Custom domain after DNS approval.</p>
+    </div>
+  </Band>
+</BaseLayout>

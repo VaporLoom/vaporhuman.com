@@ -1,0 +1,59 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
+import PageHero from "../components/PageHero.astro";
+
+const description =
+  "The VaporHuman trust boundary: what assistant systems should explain, avoid claiming, and leave to human judgment.";
+
+const commitments = [
+  { title: "Say the source of confidence", body: "Use evidence, file state, live checks, or clear uncertainty instead of vague certainty." },
+  { title: "Separate drafts from approval", body: "A local draft is not a public launch. A plan is not payment approval. A suggestion is not permission." },
+  { title: "Keep private things private", body: "Secrets, payment details, private inboxes, and account screens stay out of public pages and logs." }
+];
+---
+
+<BaseLayout title="Trust Boundary" description={description} canonicalPath="/trust.html" currentPath="/trust.html">
+  <PageHero
+    kicker="Trust boundary"
+    title="The human stays in charge."
+    lede="Trust starts when the system can say what it is, what it is not, and where its authority ends."
+    body="VaporHuman treats assistant output as support for human work, not replacement for human responsibility."
+  />
+
+  <Band variant="intro" kicker="The practical test" title="Every assistant should answer these clearly." id="questions-title">
+    <ol class="question-list">
+      <li>What are you using to answer?</li>
+      <li>What are you uncertain about?</li>
+      <li>What must a human approve?</li>
+    </ol>
+  </Band>
+
+  <Band kicker="Commitments" title="A safer assistant posture is plain, limited, and reviewable." id="commitments-title">
+    <CardGrid cards={commitments} three />
+  </Band>
+
+  <Band variant="boundary" kicker="Non-claims" title="VaporHuman is not a professional authority." id="not-title">
+    <p>
+      It is not a therapist, doctor, lawyer, accountant, employer, identity
+      provider, emergency service, safety guarantee, or authority over human
+      decisions.
+    </p>
+    <p>
+      It should not be used as the final decision-maker for medical, legal,
+      financial, employment, safety, emergency, or identity matters.
+    </p>
+  </Band>
+
+  <Band variant="status" kicker="Current site boundary" title="Static public output." id="status-title" columns>
+    <div>
+      <p>
+        This prototype keeps the public output static. The site currently has no
+        forms, login, checkout, analytics, tracking scripts, public email
+        address, donation flow, or live assistant service.
+      </p>
+      <p class="principle">Useful first. Honest always. Human in charge.</p>
+    </div>
+  </Band>
+</BaseLayout>
