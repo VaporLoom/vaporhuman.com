@@ -17,6 +17,13 @@ This is safe to place as an outbound hosted-form link after source review. It
 is not a script embed, CRM endpoint, webhook, payment flow, account system, or
 analytics surface.
 
+User-reported verification on 2026-05-21:
+
+- a safe test submission was sent through the public Tally form;
+- the notification email was received;
+- no raw submission data, email contents, account screenshots, or private lead
+  details were stored in this repo.
+
 ## Decision
 
 Use **Tally** as the first lead-intake provider for `vaporhuman.com`.

@@ -8,6 +8,7 @@ import {
   conversionGates,
   intakeFields,
   leadIntakeForm,
+  paidDiscoveryLink,
   productSelections,
   providerRecommendations
 } from "../data/conversion";
@@ -66,6 +67,7 @@ const fitCards = [
   >
     <div class="button-row" aria-label="Work with VaporHuman actions">
       <a class="button" href={leadIntakeForm.url} target="_blank" rel="noopener noreferrer">Start work intake</a>
+      <a class="button button--ghost" href={paidDiscoveryLink.url} target="_blank" rel="noopener noreferrer">Book paid discovery</a>
       <a class="button button--ghost" href="/shop.html">Visit the shop</a>
       <a class="button button--ghost" href="/trust.html">Check the boundary</a>
     </div>
@@ -90,7 +92,7 @@ const fitCards = [
       <p>
         The form is external to vaporhuman.com. This source build does not
         embed the form, run analytics, add a CRM endpoint, create accounts, or
-        process payments.
+        process payments directly.
       </p>
       <div class="button-row" aria-label="Private intake provider action">
         <a class="button" href={leadIntakeForm.url} target="_blank" rel="noopener noreferrer">Open the intake form</a>
@@ -103,6 +105,31 @@ const fitCards = [
       <p><strong>{leadIntakeForm.provider}</strong></p>
       <p>{leadIntakeForm.body}</p>
       <p>{leadIntakeForm.boundary}</p>
+    </div>
+  </Band>
+
+  <Band variant="intro" kicker="Paid discovery" title="A first paid step, hosted by Stripe." id="paid-discovery" columns>
+    <div>
+      <p>
+        The first paid service path is a Stripe-hosted discovery session. It is
+        for reviewing the request, identifying the useful next step, and
+        deciding whether a larger scoped build or invoice makes sense.
+      </p>
+      <p>
+        Stripe hosts the payment page externally. VaporHuman does not handle
+        card data, embed checkout, add payment scripts, or activate
+        subscriptions in this source build.
+      </p>
+      <div class="button-row" aria-label="Paid discovery action">
+        <a class="button" href={paidDiscoveryLink.url} target="_blank" rel="noopener noreferrer">Book paid discovery</a>
+      </div>
+    </div>
+    <div class="conversion-card">
+      <p class="status-label">{paidDiscoveryLink.status}</p>
+      <h3>{paidDiscoveryLink.title}</h3>
+      <p><strong>{paidDiscoveryLink.provider}</strong></p>
+      <p>{paidDiscoveryLink.body}</p>
+      <p>{paidDiscoveryLink.boundary}</p>
     </div>
   </Band>
 
@@ -141,7 +168,7 @@ const fitCards = [
       {checkoutTargets.map((target) => (
         <article class="checkout-card">
           <p class="status-label">{target.status}</p>
-          <h3>{target.title}</h3>
+          <h3>{target.href ? <a href={target.href} target="_blank" rel="noopener noreferrer">{target.title}</a> : target.title}</h3>
           <p>{target.body}</p>
         </article>
       ))}

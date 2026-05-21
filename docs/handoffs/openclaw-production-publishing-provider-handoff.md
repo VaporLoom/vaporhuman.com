@@ -51,10 +51,11 @@ Removed from generated Astro output:
 - `/continuity.html`
 - `/donations.html`
 
-`/work.html` is the current public offer/private-intake surface. It now has an
-approved outbound link to the hosted Tally work-intake form. It does not embed a
-form, publish a public email address, connect a CRM endpoint, add a checkout
-link, payment provider, analytics script, account behavior, or provider webhook.
+`/work.html` is the current public offer/private-intake surface. It now has
+approved outbound links to the hosted Tally work-intake form and the hosted
+Stripe paid-discovery Payment Link. It does not embed a form or checkout,
+publish a public email address, connect a CRM endpoint, add an analytics script,
+activate subscriptions, add account behavior, or add provider webhooks.
 
 ## OpenClaw status check
 
@@ -103,6 +104,8 @@ Suggested provider split:
   notice are approved. See
   `docs/handoffs/lead-intake-provider-runbook.md`.
 - **Paid services and suite checkout:** Stripe Payment Links first.
+  First recommended link: `VaporHuman Paid Discovery Session`. See
+  `docs/handoffs/paid-discovery-stripe-payment-link-runbook.md`.
 - **Merch/live creator commerce:** existing Fourthwall shop first; later connect
   `shop.vaporhuman.com` through Fourthwall plus DNS approval.
 - **Donation/support payment:** Stripe Payment Links as support/tip for
@@ -123,8 +126,10 @@ Next approval gates:
 
 1. Verify the Tally `VaporHuman Work Intake` public form URL is live, then keep
    embed, CRM, webhook, analytics, and payment routing as separate gates.
-2. Select payment provider path: Stripe Payment Links, PayPal Donate, both, or
-   delay donations until service payments are live.
+2. Verify the first Stripe Payment Link for
+   `VaporHuman Paid Discovery Session`, then keep embedded checkout,
+   subscriptions, invoices, donations/support payments, taxes, PayPal buttons,
+   and suite checkout as separate gates.
 3. Select crowdfunding path: none, Kickstarter, Indiegogo, GoFundMe, Patreon,
    or a staged campaign later.
 4. Approve public wording for donations/support payments so it does not imply

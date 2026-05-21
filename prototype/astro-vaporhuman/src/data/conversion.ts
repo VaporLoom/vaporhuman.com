@@ -62,6 +62,17 @@ export const leadIntakeForm = {
     "Do not submit secrets, payment details, private keys, recovery codes, sensitive personal data, or emergency requests."
 };
 
+export const paidDiscoveryLink = {
+  title: "VaporHuman Paid Discovery Session",
+  url: "https://buy.stripe.com/8x27sM4P76rb4Qo5Wd4ow00",
+  provider: "Stripe Payment Link",
+  status: "Live Stripe-hosted payment link",
+  body:
+    "A remote consultation to review your workflow, website, lead path, automation needs, or AI/business operations setup and recommend the next practical step.",
+  boundary:
+    "This is not emergency support, regulated professional advice, tax/legal/financial/accounting certification, guaranteed delivery, investment advice, or a promise that a larger build will be accepted."
+};
+
 export const providerRecommendations = [
   {
     title: "Lead intake",
@@ -72,10 +83,10 @@ export const providerRecommendations = [
   },
   {
     title: "Paid services",
-    provider: "Stripe Payment Links",
-    status: "Recommended first",
+    provider: "Stripe Payment Link",
+    status: "Live paid-discovery link",
     body:
-      "Fastest path for service packages, paid discovery, suite offers, subscriptions, or pay-what-you-want support payments."
+      "Use the hosted paid-discovery link for a first remote review before custom scope, invoices, subscriptions, or suite checkout."
   },
   {
     title: "Creator shop",
@@ -110,8 +121,9 @@ export const checkoutTargets = [
   {
     title: "VaporHuman private intake",
     body:
-      "Paid discovery, continuity mapping, workflow audit, or launch readiness work.",
-    status: "Stripe Payment Link pending"
+      "Paid discovery session for workflow, website, lead path, automation, or AI/business operations review.",
+    status: "Live Stripe-hosted payment link",
+    href: paidDiscoveryLink.url
   },
   {
     title: "VaporCustos suite service",
@@ -163,7 +175,7 @@ export const sharePages = [
 
 export const conversionGates = [
   "Lead destination selected: Tally hosted form. Embeds, CRM routing, and webhooks remain separate gates.",
-  "Choose checkout provider and product catalog owner.",
+  "First paid service selected: Stripe-hosted paid discovery. Embeds, subscriptions, invoices, donations, and suite checkout remain separate gates.",
   "Approve privacy notice, retention, refunds, receipts, taxes, and support policy.",
   "Verify notification delivery, spam protection, and failure-state copy before scaling lead capture.",
   "Verify provider settings and rollback before deployment."

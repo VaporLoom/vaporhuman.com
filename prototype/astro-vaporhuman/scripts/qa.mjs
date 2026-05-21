@@ -38,9 +38,12 @@ if (!existsSync(dist)) {
     { name: "XMLHttpRequest", pattern: /\bXMLHttpRequest\b/i },
     { name: "Google account OAuth", pattern: /accounts\.google\.com/i },
     { name: "mailto link", pattern: /mailto:/i },
-    { name: "Stripe checkout endpoint", pattern: /checkout\.stripe\.com|buy\.stripe\.com/i },
     { name: "PayPal checkout endpoint", pattern: /paypal\.com\/checkout|paypal\.me/i }
   ];
+
+  const approvedStripeLinks = new Set([
+    "https://buy.stripe.com/8x27sM4P76rb4Qo5Wd4ow00"
+  ]);
 
   for (const file of textFiles) {
     const content = readFileSync(file, "utf8");
@@ -48,6 +51,13 @@ if (!existsSync(dist)) {
     for (const check of forbidden) {
       if (check.pattern.test(content)) {
         fail(`${check.name} found in ${rel}`);
+      }
+    }
+
+    const stripeMatches = content.matchAll(/https:\/\/(?:checkout|buy)\.stripe\.com\/[A-Za-z0-9?&_=.-]+/g);
+    for (const match of stripeMatches) {
+      if (!approvedStripeLinks.has(match[0])) {
+        fail(`unapproved Stripe hosted checkout link found in ${rel}: ${match[0]}`);
       }
     }
   }
@@ -117,8 +127,10 @@ if (!existsSync(dist)) {
       "Company Size",
       "What Do You Need Help With?",
       "https://tally.so/r/WOjO8k",
+      "https://buy.stripe.com/8x27sM4P76rb4Qo5Wd4ow00",
+      "VaporHuman Paid Discovery Session",
       "Accounting / Admin Automation",
-      "Stripe Payment Link pending",
+      "Live Stripe-hosted payment link",
       "Before leads or money move"
     ]) {
       if (!work.includes(signal)) {

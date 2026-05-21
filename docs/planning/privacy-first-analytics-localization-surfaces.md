@@ -6,11 +6,12 @@
 
 ## Current boundary
 
-The current public artifact is static-only and now uses an outbound hosted
-Tally work-intake link. Existing source boundaries still prohibit embedded
-forms, login, checkout, payment flow, donation flow, analytics, tracking
-scripts, public email address, CRM endpoints, webhooks, or live assistant
-service without a separate gate.
+The current public artifact is static-only and now uses outbound hosted links
+for Tally work intake and Stripe paid discovery. Existing source boundaries
+still prohibit embedded forms, login, embedded checkout, in-repo payment
+processing, donation flow, subscriptions, analytics, tracking scripts, public
+email address, CRM endpoints, webhooks, or live assistant service without a
+separate gate.
 
 This packet does not change that. It is a planning surface only.
 
