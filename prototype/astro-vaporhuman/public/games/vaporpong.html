@@ -334,11 +334,17 @@
       difficultyBtn.disabled = gameMode !== 'single';
     }
 
+    function resetPaddleSizes() {
+      left.h = PADDLE_H;
+      right.h = PADDLE_H;
+      left.y = clamp(left.y, 0, H - left.h);
+      right.y = clamp(right.y, 0, H - right.h);
+    }
+
     function resetPaddles() {
       left.y = H / 2 - PADDLE_H / 2;
-      left.h = PADDLE_H;
       right.y = H / 2 - PADDLE_H / 2;
-      right.h = PADDLE_H;
+      resetPaddleSizes();
     }
 
     function resetBall(direction) {
@@ -472,6 +478,8 @@
         score.right++;
         burst(0, ball.y, COLORS.speed, 12);
       }
+
+      resetPaddleSizes();
 
       if (score.left >= WIN_SCORE || score.right >= WIN_SCORE) {
         const winner = score.left >= WIN_SCORE ? 'Player 1' : 'Player 2';
