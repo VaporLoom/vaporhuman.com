@@ -1,16 +1,32 @@
 ---
 import Band from "../components/Band.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CardGrid from "../components/CardGrid.astro";
 import PageHero from "../components/PageHero.astro";
 
 const description =
   "The VaporHuman trust boundary: what assistant systems should explain, avoid claiming, and leave to human judgment.";
 
-const commitments = [
-  { title: "Say the source of confidence", body: "Use evidence, file state, live checks, or clear uncertainty instead of vague certainty." },
-  { title: "Separate drafts from approval", body: "A local draft is not a public launch. A plan is not payment approval. A suggestion is not permission." },
-  { title: "Keep private things private", body: "Secrets, payment details, private inboxes, and account screens stay out of public pages and logs." }
+const boundaryCards = [
+  {
+    title: "Information used",
+    body: "Local files, user-provided context, explicit public links, and verified provider-independent checks when approved."
+  },
+  {
+    title: "Uncertainty",
+    body: "Missing evidence, stale memory, incomplete source material, unknown provider state, and claims that need review."
+  },
+  {
+    title: "Human approval",
+    body: "Publishing, commits, provider changes, payments, accounts, DNS, public claims, and sensitive workflow authority."
+  },
+  {
+    title: "Not allowed",
+    body: "Hidden collection, fake login, fake assistant service, unapproved tracking, raw private data, and authority over human decisions."
+  },
+  {
+    title: "Private by handling",
+    body: "Secrets, payment details, recovery codes, private messages, raw sessions, identity data, account screens, and provider dashboards."
+  }
 ];
 ---
 
@@ -22,19 +38,63 @@ const commitments = [
     body="VaporHuman treats assistant output as support for human work, not replacement for human responsibility."
   />
 
-  <Band variant="intro" kicker="The practical test" title="Every assistant should answer these clearly." id="questions-title">
-    <ol class="question-list">
-      <li>What are you using to answer?</li>
-      <li>What are you uncertain about?</li>
-      <li>What must a human approve?</li>
-    </ol>
+  <Band variant="intro" kicker="Boundary map" title="Five questions every assistant workflow should expose." id="boundary-map">
+    <div class="trust-matrix" aria-label="Trust boundary system">
+      {boundaryCards.map((card) => (
+        <article class="trust-cell">
+          <p class="status-label">{card.title}</p>
+          <p>{card.body}</p>
+        </article>
+      ))}
+    </div>
   </Band>
 
-  <Band kicker="Commitments" title="A safer assistant posture is plain, limited, and reviewable." id="commitments-title">
-    <CardGrid cards={commitments} three />
+  <Band kicker="Explorer" title="Open each gate before trusting the answer." id="trust-explorer">
+    <div class="accordion-list">
+      <details class="accordion-card" open>
+        <summary>What is the system using to answer?</summary>
+        <p>
+          It should name the source layer: local repo state, user-provided
+          instructions, static site files, verified public URLs, or reported
+          context that still needs confirmation.
+        </p>
+      </details>
+      <details class="accordion-card">
+        <summary>What is uncertain?</summary>
+        <p>
+          It should identify missing context, stale memory, unchecked provider
+          state, incomplete tests, unsupported claims, and any inference made
+          from partial evidence.
+        </p>
+      </details>
+      <details class="accordion-card">
+        <summary>What needs human approval?</summary>
+        <p>
+          Public publishing, repo promotion, payments, accounts, provider
+          settings, DNS, support commitments, customer communication, and
+          sensitive authority changes wait for explicit approval.
+        </p>
+      </details>
+      <details class="accordion-card">
+        <summary>What is not allowed?</summary>
+        <p>
+          Hidden tracking, copied secrets, public claims without review,
+          unapproved external calls, fake dashboards, fake assistant services,
+          and systems that pretend AI is the final decision-maker.
+        </p>
+      </details>
+      <details class="accordion-card">
+        <summary>What stays private?</summary>
+        <p>
+          Raw sessions, private messages, provider dashboards, payment data,
+          credentials, identity records, account data, recovery codes, and
+          sensitive personal context stay out of public pages.
+        </p>
+      </details>
+    </div>
   </Band>
 
-  <Band variant="boundary" kicker="Non-claims" title="VaporHuman is not a professional authority." id="not-title">
+  <Band variant="boundary" kicker="Non-claims" title="VaporHuman is not an authority over human decisions." id="not-title">
     <p>
       It is not a therapist, doctor, lawyer, accountant, employer, identity
       provider, emergency service, safety guarantee, or authority over human
@@ -52,7 +112,7 @@ const commitments = [
         This public output remains static and now links to a hosted Tally
         work-intake form plus a hosted Stripe paid-discovery link. The site
         itself has no embedded forms, login, checkout, analytics, tracking
-        scripts, public email address, donation flow, subscriptions, or live
+        scripts, public email address, public support flow, subscriptions, or live
         assistant service.
       </p>
       <p class="principle">Useful first. Honest always. Human in charge.</p>

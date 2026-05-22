@@ -12,24 +12,27 @@ const description =
   <PageHero
     kicker="Shop"
     title="Support the work through the live Fourthwall shop."
-    lede="The fastest income path is the shop that already exists."
-    body="Fourthwall handles the storefront and checkout externally. VaporHuman can promote it now while service checkout, donations, and crowdfunding are prepared through separate provider gates."
+    lede="The current support and storefront route lives outside this site."
+    body="Fourthwall handles the storefront and checkout externally. VaporHuman links to it without embedding checkout, cart scripts, tracking pixels, or account behavior."
   >
     <div class="button-row" aria-label="Shop actions">
-      <a class="button" href={fourthwallShop.url} rel="noopener noreferrer">Visit the shop</a>
+      <a class="button" href={fourthwallShop.url} target="_blank" rel="noopener noreferrer">Visit the shop</a>
       <a class="button button--ghost" href="/work.html">Work with VaporHuman</a>
     </div>
   </PageHero>
 
-  <Band variant="intro" kicker="Live storefront" title="Fourthwall is the first active commerce lane." id="storefront-title">
-    <div class="conversion-grid">
-      <article class="conversion-card">
+  <Band variant="intro" kicker="Storefront routes" title="Three shop states, one clear boundary." id="storefront-title">
+    <div class="shop-grid" aria-label="Shop route cards">
+      <article class="shop-card">
         <p class="status-label">{fourthwallShop.status}</p>
         <h3>{fourthwallShop.title}</h3>
         <p>{fourthwallShop.body}</p>
         <p class="share-url">{fourthwallShop.url}</p>
+        <div class="button-row">
+          <a class="button" href={fourthwallShop.url} target="_blank" rel="noopener noreferrer">Open Fourthwall</a>
+        </div>
       </article>
-      <article class="conversion-card">
+      <article class="shop-card">
         <p class="status-label">Connected platform</p>
         <h3>{fourthwallShop.connectedPlatform}</h3>
         <p>
@@ -37,10 +40,19 @@ const description =
           the Fourthwall app connection and overlay settings are verified.
         </p>
       </article>
+      <article class="shop-card">
+        <p class="status-label">Future domain route</p>
+        <h3>{fourthwallShop.futureDomain}</h3>
+        <p>
+          The custom shop subdomain is a later provider and DNS gate. The root
+          site stays focused on trust, work intake, services, and future product
+          routing.
+        </p>
+      </article>
     </div>
   </Band>
 
-  <Band kicker="Next shop moves" title="Promote now, brand the domain next." id="shop-actions">
+  <Band kicker="Next shop moves" title="Current support route first, branded routing later." id="shop-actions">
     <div class="checkout-grid">
       {shopActions.map((action) => (
         <article class="checkout-card">
@@ -59,7 +71,7 @@ const description =
         posture, and future suite routing.
       </p>
       <p>{fourthwallShop.domainGate}</p>
-      <p class="principle">Shop link now. Custom domain after DNS approval.</p>
+      <p class="principle">Shop link now. Custom domain after provider and DNS approval.</p>
     </div>
   </Band>
 </BaseLayout>

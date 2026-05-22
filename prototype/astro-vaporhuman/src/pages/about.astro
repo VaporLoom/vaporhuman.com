@@ -15,11 +15,11 @@ const focusCards = [
 ];
 
 const directoryCards = [
-  { title: "Newsroom", body: "No press releases or media announcements are active yet. Future updates should be dated, sourced, and easy to verify." },
-  { title: "VaporHuman Leadership", body: "No public leadership roster is published yet. Any future roster should separate human operators from assistant personas." },
+  { title: "Newsroom", body: "Future updates should be dated, sourced, and easy to verify. There are no press announcements active yet." },
+  { title: "VaporHuman Leadership", body: "A public roster is not published yet. Any future roster should separate human operators from assistant personas." },
   { title: "Career Opportunities", body: "No hiring, recruiting, contractor, or employment opportunities are open through this site." },
-  { title: "Investors", body: "No investment offering, fundraising round, securities claim, or investor-relations program is active here." },
-  { title: "Ethics & Compliance", body: "The current posture is simple: clear boundaries, no professional advice claims, no hidden data collection, and human approval for sensitive actions." },
+  { title: "Investors", body: "No investment offering, capital raise, securities claim, or investor-relations program is active here." },
+  { title: "Ethics & Compliance", body: "The current posture is simple: clear boundaries, no authority claims, no hidden data collection, and human approval for sensitive actions." },
   { title: "Events", body: "No public events, webinars, workshops, or appearances are scheduled through this site yet." },
   { title: "Contact VaporHuman", body: "Work requests now use the hosted Tally intake path. No public email address is published yet." }
 ];
@@ -29,22 +29,49 @@ const directoryCards = [
   <PageHero
     kicker="About"
     title="A human layer for assistant systems."
-    lede="VaporHuman is for the parts of AI work that need clarity, consent, memory, and handoff discipline."
+    lede="VaporHuman gives a name to the discipline of keeping memory, handoffs, approvals, and authority boundaries readable."
     body="It is not trying to make an assistant sound more human. It is trying to keep the actual human visible."
   />
 
-  <Band variant="intro" kicker="Why this exists" title="AI work needs a readable contract." id="origin-title" columns>
-    <div>
-      <p>
-        Assistants can be useful, but usefulness is not the same as trust. A
-        system should make it easy to see what it is doing, what it is
-        remembering, what it is guessing, and what still needs human judgment.
-      </p>
-      <p>
-        VaporHuman gives that work a name and a public place to explain the
-        posture before making bigger claims about products, services, accounts,
-        or availability.
-      </p>
+  <Band variant="intro" kicker="Origin sequence" title="The public surface starts with a practical problem." id="origin-title">
+    <ol class="origin-sequence" aria-label="Conceptual origin sequence">
+      <li>
+        <span>01</span>
+        <h3>Fragmented sessions</h3>
+        <p>Useful assistant work appears in separate windows, tools, repos, and memories.</p>
+      </li>
+      <li>
+        <span>02</span>
+        <h3>Lost context</h3>
+        <p>Important constraints disappear between sessions, and the next assistant starts with partial evidence.</p>
+      </li>
+      <li>
+        <span>03</span>
+        <h3>Human risk</h3>
+        <p>When uncertainty is hidden, the human has to reconstruct what is true, private, or still unapproved.</p>
+      </li>
+      <li>
+        <span>04</span>
+        <h3>Memory boundaries</h3>
+        <p>Continuity becomes useful only when it separates durable notes from raw private material.</p>
+      </li>
+      <li>
+        <span>05</span>
+        <h3>Visible handoffs</h3>
+        <p>The next person or assistant should see what changed, what was verified, and what remains parked.</p>
+      </li>
+      <li>
+        <span>06</span>
+        <h3>Approval gates</h3>
+        <p>Public claims, provider changes, payments, accounts, and sensitive work wait for explicit human approval.</p>
+      </li>
+    </ol>
+    <div class="origin-map" aria-hidden="true">
+      <span>Fragments</span>
+      <span>Threads</span>
+      <span>Lanes</span>
+      <span>Checkpoint</span>
+      <span>Handoff</span>
     </div>
   </Band>
 
@@ -61,7 +88,7 @@ const directoryCards = [
       <p>
         This site is currently a trust surface with a hosted work-intake link.
         It also links to a Stripe-hosted paid discovery session. It does not
-        run analytics, provide professional advice, process card data directly,
+        run analytics, provide regulated advice, process card data directly,
         or announce guaranteed service availability.
       </p>
       <p>

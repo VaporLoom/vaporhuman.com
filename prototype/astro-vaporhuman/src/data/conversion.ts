@@ -70,7 +70,7 @@ export const paidDiscoveryLink = {
   body:
     "A remote consultation to review your workflow, website, lead path, automation needs, or AI/business operations setup and recommend the next practical step.",
   boundary:
-    "This is not emergency support, regulated professional advice, tax/legal/financial/accounting certification, guaranteed delivery, investment advice, or a promise that a larger build will be accepted."
+    "This is not emergency support, regulated advice, tax/legal/financial/accounting certification, guaranteed delivery, investment advice, or a promise that a larger build will be accepted."
 };
 
 export const providerRecommendations = [
@@ -93,22 +93,8 @@ export const providerRecommendations = [
     provider: "Fourthwall with StreamElements",
     status: "Existing account available",
     body:
-      "Use the current Fourthwall shop as the first live income route while service checkout, donation wording, and crowdfunding are prepared."
+      "Use the current Fourthwall shop as the first live income route while service checkout and branded shop routing remain separate gates."
   },
-  {
-    title: "Donation-style support",
-    provider: "Stripe Payment Links or PayPal Donate",
-    status: "Wording and eligibility gate",
-    body:
-      "Use only with accurate support/tip/donation language, provider eligibility, refund policy, and no tax-deductibility claim unless verified."
-  },
-  {
-    title: "Campaign crowdfunding",
-    provider: "Kickstarter or Indiegogo",
-    status: "Campaign packet needed",
-    body:
-      "Best for a public launch campaign with reward tiers, funding goal, fulfillment promises, updates, and campaign-specific risk language."
-  }
 ];
 
 export const checkoutTargets = [
@@ -134,15 +120,9 @@ export const checkoutTargets = [
   {
     title: "Support the VaporHuman lane",
     body:
-      "Support payment, tip, sponsorship, or donation-style contribution for the public trust and continuity work.",
-    status: "Payment wording and provider gate required"
+      "A future support lane would need provider wording, refund posture, receipts, taxes, and support policy before publication.",
+    status: "Provider and policy gate required"
   },
-  {
-    title: "Crowdfunding campaign",
-    body:
-      "Public campaign for VaporHuman or the broader suite, with defined deliverables and reward tiers.",
-    status: "Kickstarter or Indiegogo packet required"
-  }
 ];
 
 export const sharePages = [
@@ -175,7 +155,7 @@ export const sharePages = [
 
 export const conversionGates = [
   "Lead destination selected: Tally hosted form. Embeds, CRM routing, and webhooks remain separate gates.",
-  "First paid service selected: Stripe-hosted paid discovery. Embeds, subscriptions, invoices, donations, and suite checkout remain separate gates.",
+  "First paid service selected: Stripe-hosted paid discovery. Embeds, subscriptions, invoices, and suite checkout remain separate gates.",
   "Approve privacy notice, retention, refunds, receipts, taxes, and support policy.",
   "Verify notification delivery, spam protection, and failure-state copy before scaling lead capture.",
   "Verify provider settings and rollback before deployment."
@@ -189,7 +169,7 @@ export const fourthwallShop = {
   connectedPlatform: "StreamElements",
   status: "Existing external storefront",
   body:
-    "Use this as the first live commerce path while VaporHuman-specific service payments, donation/support links, and crowdfunding are prepared.",
+    "Use this as the first live commerce path while VaporHuman-specific service payments, support links, and campaign work remain separate gates.",
   domainGate:
     "Connect the custom subdomain in Fourthwall Settings > Domain, then add the DNS records at the domain provider. Keep the root domain on the main VaporHuman site."
 };
