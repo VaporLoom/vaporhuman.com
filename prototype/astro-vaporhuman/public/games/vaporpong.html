@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Copyright (c) 2026 VaporHuman. All rights reserved. No license is granted for copying, redistribution, sublicensing, commercial use, public hosting, or derivative works without prior written permission. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -116,7 +117,8 @@
     }
 
     .controls-note,
-    .status {
+    .status,
+    .rights-note {
       margin: 0;
       color: var(--muted);
       font-size: 13px;
@@ -125,6 +127,11 @@
 
     .status {
       color: var(--ball);
+    }
+
+    .rights-note {
+      color: var(--quiet);
+      font-size: 11px;
     }
 
     .button-row {
@@ -238,6 +245,7 @@
         </div>
       </div>
       <p id="statusText" class="status" aria-live="polite">Ready.</p>
+      <p class="rights-note">Copyright (c) 2026 VaporHuman. All rights reserved.</p>
       <p class="sr-only" id="screenReaderHint">
         In CPU mode, pointer and touch controls move Player 2. In 2 Player mode, they move the paddle on the side where contact begins.
       </p>

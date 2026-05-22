@@ -320,6 +320,7 @@ if (!existsSync(dist)) {
       "Mode: CPU P1",
       "CPU: Normal",
       "CPU_SETTINGS",
+      "All rights reserved.",
       "prefers-reduced-motion",
       "pointerdown",
       "function pauseGame"
