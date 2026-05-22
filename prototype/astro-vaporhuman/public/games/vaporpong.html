@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>VaporPong - VaporHuman Prototype</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #141416;
+      --surface: #1e2027;
+      --surface-strong: #272934;
+      --text: #f7f4eb;
+      --muted: rgba(247, 244, 235, 0.68);
+      --quiet: rgba(247, 244, 235, 0.42);
+      --line: rgba(247, 244, 235, 0.18);
+      --left: #cecbf6;
+      --right: #9fe1cb;
+      --ball: #fac775;
+      --warn: #f0997b;
+      --blue: #85b7eb;
+      --green: #97c459;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(206, 203, 246, 0.14), transparent 28rem),
+        radial-gradient(circle at 84% 18%, rgba(159, 225, 203, 0.12), transparent 26rem),
+        linear-gradient(145deg, #17171a 0%, #1e2027 48%, #151a1d 100%);
+      font-family: "Courier New", Courier, monospace;
+      padding: clamp(16px, 4vw, 36px);
+      user-select: none;
+    }
+
+    main {
+      width: min(100%, 760px);
+      min-height: calc(100vh - clamp(32px, 8vw, 72px));
+      margin: 0 auto;
+      display: grid;
+      align-content: center;
+      gap: 16px;
+    }
+
+    header {
+      display: grid;
+      gap: 8px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--quiet);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ball);
+      font-size: clamp(28px, 7vw, 48px);
+      line-height: 1;
+      letter-spacing: 0;
+      text-shadow: 0 0 18px rgba(250, 199, 117, 0.28);
+    }
+
+    .context {
+      max-width: 62ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .stage {
+      width: min(100%, 680px);
+      margin: 0 auto;
+    }
+
+    #gameCanvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 17 / 10;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #1a1a18;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .hud {
+      width: min(100%, 680px);
+      margin: 0 auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .hud-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .controls-note,
+    .status {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .status {
+      color: var(--ball);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      min-width: 96px;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(250, 199, 117, 0.55);
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--ball);
+      outline-offset: 3px;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 14px;
+      }
+
+      main {
+        min-height: calc(100vh - 28px);
+        align-content: start;
+      }
+
+      .hud-row {
+        align-items: stretch;
+      }
+
+      .button-row,
+      .button-row button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body {
+        background: #17171a;
+      }
+
+      button {
+        transition: none;
+      }
+
+      h1 {
+        text-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main aria-labelledby="gameTitle">
+    <header>
+      <p class="eyebrow">VaporHuman static prototype</p>
+      <h1 id="gameTitle">VaporPong</h1>
+      <p class="context">
+        An early static browser-game prototype. It runs locally in this page and does not require login, checkout, tracking, or a live assistant.
+      </p>
+    </header>
+
+    <section class="stage" aria-label="VaporPong game board">
+      <canvas
+        id="gameCanvas"
+        width="680"
+        height="400"
+        role="img"
+        aria-label="VaporPong canvas. Player 1 uses W and S. Player 2 uses Arrow Up and Arrow Down. First to 11 wins."
+      ></canvas>
+    </section>
+
+    <section class="hud" aria-label="Game controls">
+      <div class="hud-row">
+        <p class="controls-note">Default: CPU Player 1 | Player 2: Arrow Up/Down | 2 Player mode: W/S</p>
+        <div class="button-row">
+          <button id="startBtn" type="button">Start</button>
+          <button id="modeBtn" type="button">Mode: CPU P1</button>
+          <button id="difficultyBtn" type="button">CPU: Normal</button>
+          <button id="resetBtn" type="button">Reset</button>
+        </div>
+      </div>
+      <p id="statusText" class="status" aria-live="polite">Ready.</p>
+      <p class="sr-only" id="screenReaderHint">
+        In CPU mode, pointer and touch controls move Player 2. In 2 Player mode, they move the paddle on the side where contact begins.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
+    const modeBtn = document.getElementById('modeBtn');
+    const difficultyBtn = document.getElementById('difficultyBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const statusText = document.getElementById('statusText');
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const PADDLE_W = 12;
+    const PADDLE_H = 80;
+    const BALL_SIZE = 8;
+    const PADDLE_SPEED = 6;
+    const INIT_SPEED = 4;
+    const MAX_SPEED = 18;
+    const WIN_SCORE = 11;
+    const DIFFICULTY_ORDER = ['easy', 'normal', 'hard'];
+    const CPU_SETTINGS = {
+      easy: { label: 'Easy', maxSpeed: 3.3, ease: 0.052, deadZone: 22, reaction: 5, error: 44 },
+      normal: { label: 'Normal', maxSpeed: 4.7, ease: 0.072, deadZone: 13, reaction: 7, error: 28 },
+      hard: { label: 'Hard', maxSpeed: 6.2, ease: 0.096, deadZone: 6, reaction: 11, error: 12 }
+    };
+
+    const COLORS = {
+      left: '#CECBF6',
+      right: '#9FE1CB',
+      ball: '#FAC775',
+      wall: '#F0997B',
+      speed: '#F09595',
+      size: '#85B7EB',
+      grid: 'rgba(83, 74, 183, 0.16)',
+      divider: 'rgba(255, 255, 255, 0.18)',
+      text: '#F7F4EB'
+    };
+
+    let gameState = 'waiting';
+    let gameMode = 'single';
+    let difficulty = 'normal';
+    let winnerText = '';
+    let keys = {};
+    let particles = [];
+    let trail = [];
+    let powerUp = null;
+    let cpuFrame = 0;
+    const activePointers = new Map();
+
+    const left = { x: 30, y: H / 2 - PADDLE_H / 2, h: PADDLE_H };
+    const right = { x: W - 30 - PADDLE_W, y: H / 2 - PADDLE_H / 2, h: PADDLE_H };
+    const ball = { x: W / 2, y: H / 2, vx: 0, vy: 0, speed: INIT_SPEED, size: BALL_SIZE };
+    const score = { left: 0, right: 0 };
+
+    function isReducedMotion() {
+      return reducedMotionQuery.matches;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function setStatus(message) {
+      statusText.textContent = message;
+    }
+
+    function setButtonLabel() {
+      if (gameState === 'playing') startBtn.textContent = 'Pause';
+      else if (gameState === 'paused') startBtn.textContent = 'Resume';
+      else if (gameState === 'ended') startBtn.textContent = 'Play Again';
+      else startBtn.textContent = 'Start';
+    }
+
+    function setModeLabel() {
+      modeBtn.textContent = gameMode === 'single' ? 'Mode: CPU P1' : 'Mode: 2 Player';
+    }
+
+    function setDifficultyLabel() {
+      difficultyBtn.textContent = 'CPU: ' + CPU_SETTINGS[difficulty].label;
+      difficultyBtn.disabled = gameMode !== 'single';
+    }
+
+    function resetPaddles() {
+      left.y = H / 2 - PADDLE_H / 2;
+      left.h = PADDLE_H;
+      right.y = H / 2 - PADDLE_H / 2;
+      right.h = PADDLE_H;
+    }
+
+    function resetBall(direction) {
+      ball.x = W / 2;
+      ball.y = H / 2;
+      ball.speed = INIT_SPEED;
+      ball.size = BALL_SIZE;
+      const angle = (Math.random() * Math.PI / 2) - (Math.PI / 4);
+      const serveDirection = direction || (Math.random() > 0.5 ? 1 : -1);
+      ball.vx = Math.cos(angle) * ball.speed * serveDirection;
+      ball.vy = Math.sin(angle) * ball.speed;
+      trail = [];
+      particles = [];
+      powerUp = null;
+    }
+
+    function resetGame() {
+      gameState = 'waiting';
+      winnerText = '';
+      score.left = 0;
+      score.right = 0;
+      resetPaddles();
+      resetBall();
+      setButtonLabel();
+      setModeLabel();
+      setDifficultyLabel();
+      setStatus(gameMode === 'single' ? 'Ready. CPU controls Player 1.' : 'Ready. Two-player mode.');
+    }
+
+    function startGame() {
+      if (gameState === 'ended') {
+        score.left = 0;
+        score.right = 0;
+        resetPaddles();
+      }
+
+      winnerText = '';
+      resetBall();
+      gameState = 'playing';
+      setButtonLabel();
+      setStatus(gameMode === 'single' ? 'Playing. CPU Player 1 is set to ' + CPU_SETTINGS[difficulty].label + '.' : 'Playing. Player 1 uses W/S.');
+    }
+
+    function pauseGame() {
+      if (gameState !== 'playing') return;
+      gameState = 'paused';
+      setButtonLabel();
+      setStatus('Paused.');
+    }
+
+    function resumeGame() {
+      if (gameState !== 'paused') return;
+      gameState = 'playing';
+      setButtonLabel();
+      setStatus('Playing.');
+    }
+
+    function toggleStartPause() {
+      if (gameState === 'playing') pauseGame();
+      else if (gameState === 'paused') resumeGame();
+      else startGame();
+    }
+
+    function toggleMode() {
+      gameMode = gameMode === 'single' ? 'versus' : 'single';
+      resetGame();
+      setStatus(gameMode === 'single' ? 'CPU controls Player 1. You control Player 2.' : 'Two-player mode. Player 1 uses W/S.');
+    }
+
+    function cycleDifficulty() {
+      const current = DIFFICULTY_ORDER.indexOf(difficulty);
+      difficulty = DIFFICULTY_ORDER[(current + 1) % DIFFICULTY_ORDER.length];
+      setDifficultyLabel();
+      if (gameMode === 'single') {
+        setStatus('CPU difficulty: ' + CPU_SETTINGS[difficulty].label + '.');
+      }
+    }
+
+    function burst(x, y, color, count) {
+      if (isReducedMotion()) return;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x,
+          y,
+          vx: (Math.random() - 0.5) * 5,
+          vy: (Math.random() - 0.5) * 5,
+          life: 1,
+          color
+        });
+      }
+    }
+
+    function spawnPowerUp() {
+      if (powerUp || Math.random() >= 0.004) return;
+      const type = Math.random() > 0.5 ? 'speed' : 'size';
+      powerUp = {
+        x: W / 4 + Math.random() * (W / 2),
+        y: 60 + Math.random() * (H - 120),
+        type,
+        r: 14,
+        pulse: 0
+      };
+    }
+
+    function applySpeedLimit() {
+      const current = Math.hypot(ball.vx, ball.vy);
+      if (current === 0) return;
+      const next = Math.min(current, MAX_SPEED);
+      const scale = next / current;
+      ball.vx *= scale;
+      ball.vy *= scale;
+      ball.speed = next;
+    }
+
+    function applyPaddleHit(paddle, direction, color) {
+      const relative = clamp((ball.y - (paddle.y + paddle.h / 2)) / (paddle.h / 2), -1, 1);
+      const bounce = relative * (Math.PI / 3);
+      const speed = Math.min(Math.hypot(ball.vx, ball.vy) * 1.04, MAX_SPEED);
+      ball.vx = Math.cos(bounce) * speed * direction;
+      ball.vy = Math.sin(bounce) * speed;
+      ball.speed = speed;
+      ball.x = direction > 0 ? paddle.x + PADDLE_W + ball.size : paddle.x - ball.size;
+      burst(ball.x, ball.y, color, 8);
+    }
+
+    function finishPoint(side) {
+      if (side === 'left') {
+        score.left++;
+        burst(W, ball.y, COLORS.speed, 12);
+      } else {
+        score.right++;
+        burst(0, ball.y, COLORS.speed, 12);
+      }
+
+      if (score.left >= WIN_SCORE || score.right >= WIN_SCORE) {
+        const winner = score.left >= WIN_SCORE ? 'Player 1' : 'Player 2';
+        gameState = 'ended';
+        winnerText = winner + ' wins';
+        setButtonLabel();
+        setStatus(winner + ' wins ' + score.left + '-' + score.right + '.');
+        return;
+      }
+
+      setStatus('Score: Player 1 ' + score.left + ', Player 2 ' + score.right + '.');
+      resetBall(side === 'left' ? -1 : 1);
+    }
+
+    function updateKeyboardControls() {
+      if (gameMode === 'versus') {
+        if (keys.w || keys.W) left.y = clamp(left.y - PADDLE_SPEED, 0, H - left.h);
+        if (keys.s || keys.S) left.y = clamp(left.y + PADDLE_SPEED, 0, H - left.h);
+      }
+      if (keys.ArrowUp) right.y = clamp(right.y - PADDLE_SPEED, 0, H - right.h);
+      if (keys.ArrowDown) right.y = clamp(right.y + PADDLE_SPEED, 0, H - right.h);
+    }
+
+    function updateCpuOpponent() {
+      if (gameMode !== 'single') return;
+
+      cpuFrame++;
+      const settings = CPU_SETTINGS[difficulty];
+      const center = left.y + left.h / 2;
+      const ballMovingTowardCpu = ball.vx < 0;
+      const distancePressure = clamp((W - ball.x) / W, 0, 1);
+      const wobble = Math.sin(cpuFrame / 18 + score.right) * settings.error * distancePressure;
+      const targetY = ballMovingTowardCpu ? ball.y + wobble : H / 2 + wobble * 0.2;
+      const diff = targetY - center;
+
+      if (Math.abs(diff) < settings.deadZone) return;
+      if (ballMovingTowardCpu && cpuFrame % settings.reaction === 0) return;
+
+      const urgency = ballMovingTowardCpu ? 1 : 0.38;
+      const step = clamp(diff * settings.ease * urgency, -settings.maxSpeed, settings.maxSpeed);
+      left.y = clamp(left.y + step, 0, H - left.h);
+    }
+
+    function update() {
+      if (gameState !== 'playing') return;
+
+      updateKeyboardControls();
+      updateCpuOpponent();
+
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      if (!isReducedMotion()) {
+        trail.push({ x: ball.x, y: ball.y, alpha: 1 });
+        if (trail.length > 18) trail.shift();
+        trail.forEach(point => {
+          point.alpha *= 0.9;
+        });
+      } else {
+        trail = [];
+      }
+
+      if (ball.y - ball.size <= 0) {
+        ball.y = ball.size;
+        ball.vy = Math.abs(ball.vy);
+        burst(ball.x, ball.y, COLORS.wall, 5);
+      } else if (ball.y + ball.size >= H) {
+        ball.y = H - ball.size;
+        ball.vy = -Math.abs(ball.vy);
+        burst(ball.x, ball.y, COLORS.wall, 5);
+      }
+
+      if (
+        ball.vx < 0 &&
+        ball.x - ball.size <= left.x + PADDLE_W &&
+        ball.x + ball.size >= left.x &&
+        ball.y >= left.y &&
+        ball.y <= left.y + left.h
+      ) {
+        applyPaddleHit(left, 1, COLORS.left);
+      }
+
+      if (
+        ball.vx > 0 &&
+        ball.x + ball.size >= right.x &&
+        ball.x - ball.size <= right.x + PADDLE_W &&
+        ball.y >= right.y &&
+        ball.y <= right.y + right.h
+      ) {
+        applyPaddleHit(right, -1, COLORS.right);
+      }
+
+      if (ball.x < -ball.size) finishPoint('right');
+      if (ball.x > W + ball.size) finishPoint('left');
+
+      spawnPowerUp();
+      if (powerUp) {
+        powerUp.pulse += isReducedMotion() ? 0 : 0.08;
+        const distance = Math.hypot(ball.x - powerUp.x, ball.y - powerUp.y);
+        if (distance < powerUp.r + ball.size) {
+          const color = powerUp.type === 'speed' ? COLORS.speed : COLORS.size;
+          burst(powerUp.x, powerUp.y, color, 12);
+          if (powerUp.type === 'speed') {
+            ball.vx *= 1.35;
+            ball.vy *= 1.35;
+            applySpeedLimit();
+          } else {
+            left.h = Math.min(left.h * 1.25, H * 0.55);
+            right.h = Math.min(right.h * 1.25, H * 0.55);
+            left.y = clamp(left.y, 0, H - left.h);
+            right.y = clamp(right.y, 0, H - right.h);
+          }
+          powerUp = null;
+        }
+      }
+
+      particles = particles.filter(particle => {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.life -= 0.025;
+        return particle.life > 0;
+      });
+    }
+
+    function drawBackground() {
+      if (isReducedMotion()) {
+        ctx.fillStyle = '#1a1a18';
+        ctx.fillRect(0, 0, W, H);
+      } else {
+        const gradient = ctx.createLinearGradient(0, 0, W, H);
+        gradient.addColorStop(0, 'rgba(44, 44, 42, 0.82)');
+        gradient.addColorStop(0.52, 'rgba(83, 74, 183, 0.58)');
+        gradient.addColorStop(1, 'rgba(29, 158, 117, 0.5)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = 'rgba(20, 20, 22, 0.2)';
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      ctx.strokeStyle = COLORS.grid;
+      ctx.lineWidth = 1;
+      for (let y = 40; y < H; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      ctx.setLineDash([6, 6]);
+      ctx.strokeStyle = COLORS.divider;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(W / 2, 0);
+      ctx.lineTo(W / 2, H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function drawRectGlow(x, y, width, height, color) {
+      ctx.shadowBlur = isReducedMotion() ? 0 : 18;
+      ctx.shadowColor = color;
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, width, height);
+      ctx.shadowBlur = 0;
+    }
+
+    function drawBall() {
+      ctx.shadowBlur = isReducedMotion() ? 0 : 22;
+      ctx.shadowColor = COLORS.ball;
+      ctx.fillStyle = COLORS.ball;
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    function drawTrail() {
+      if (isReducedMotion()) return;
+      trail.forEach(point => {
+        const size = point.alpha * 5;
+        ctx.fillStyle = 'rgba(250, 199, 117, ' + point.alpha * 0.5 + ')';
+        ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+      });
+    }
+
+    function drawPowerUp() {
+      if (!powerUp) return;
+      const color = powerUp.type === 'speed' ? COLORS.speed : COLORS.size;
+      const pulse = isReducedMotion() ? 0 : Math.sin(powerUp.pulse) * 3;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.shadowBlur = isReducedMotion() ? 0 : 10;
+      ctx.shadowColor = color;
+      ctx.beginPath();
+      ctx.arc(powerUp.x, powerUp.y, powerUp.r + pulse, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = COLORS.text;
+      ctx.font = 'bold 11px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText(powerUp.type === 'speed' ? 'SPD' : 'BIG', powerUp.x, powerUp.y + 4);
+    }
+
+    function drawParticles() {
+      if (isReducedMotion()) return;
+      particles.forEach(particle => {
+        ctx.globalAlpha = particle.life;
+        ctx.fillStyle = particle.color;
+        ctx.fillRect(particle.x - 2, particle.y - 2, 4, 4);
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function drawScores() {
+      ctx.font = '500 36px Courier New';
+      ctx.textAlign = 'center';
+      ctx.shadowBlur = isReducedMotion() ? 0 : 10;
+      ctx.fillStyle = COLORS.left;
+      ctx.shadowColor = COLORS.left;
+      ctx.fillText(score.left, W / 2 - 50, 52);
+      ctx.fillStyle = COLORS.right;
+      ctx.shadowColor = COLORS.right;
+      ctx.fillText(score.right, W / 2 + 50, 52);
+      ctx.shadowBlur = 0;
+    }
+
+    function drawOverlay(title, subtitle) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.66)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = COLORS.ball;
+      ctx.font = '500 28px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText(title, W / 2, H / 2 - 12);
+      ctx.fillStyle = 'rgba(247, 244, 235, 0.72)';
+      ctx.font = '14px Courier New';
+      ctx.fillText(subtitle, W / 2, H / 2 + 20);
+    }
+
+    function drawModeTag() {
+      ctx.fillStyle = 'rgba(247, 244, 235, 0.72)';
+      ctx.font = '12px Courier New';
+      ctx.textAlign = 'left';
+      ctx.fillText(gameMode === 'single' ? 'CPU P1: ' + CPU_SETTINGS[difficulty].label : 'P1 HUMAN', 18, H - 18);
+      ctx.textAlign = 'right';
+      ctx.fillText('P2 HUMAN', W - 18, H - 18);
+    }
+
+    function draw() {
+      drawBackground();
+      drawTrail();
+      drawRectGlow(left.x, left.y, PADDLE_W, left.h, COLORS.left);
+      drawRectGlow(right.x, right.y, PADDLE_W, right.h, COLORS.right);
+      drawBall();
+      drawPowerUp();
+      drawParticles();
+      drawScores();
+      drawModeTag();
+
+      if (gameState === 'waiting') drawOverlay('VAPORPONG', gameMode === 'single' ? 'Press Start to challenge the CPU' : 'Press Start for 2 Player');
+      if (gameState === 'paused') drawOverlay('PAUSED', 'Press Resume to continue');
+      if (gameState === 'ended') drawOverlay(winnerText, 'Press Play Again to restart');
+    }
+
+    function loop() {
+      update();
+      draw();
+      window.requestAnimationFrame(loop);
+    }
+
+    function canvasPoint(event) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (event.clientX - rect.left) * W / rect.width,
+        y: (event.clientY - rect.top) * H / rect.height
+      };
+    }
+
+    function movePaddle(side, y) {
+      const paddle = side === 'left' ? left : right;
+      paddle.y = clamp(y - paddle.h / 2, 0, H - paddle.h);
+    }
+
+    canvas.addEventListener('pointerdown', event => {
+      event.preventDefault();
+      const point = canvasPoint(event);
+      const side = gameMode === 'single' ? 'right' : point.x < W / 2 ? 'left' : 'right';
+      activePointers.set(event.pointerId, side);
+      canvas.setPointerCapture(event.pointerId);
+      movePaddle(side, point.y);
+    });
+
+    canvas.addEventListener('pointermove', event => {
+      const side = activePointers.get(event.pointerId);
+      if (!side) return;
+      event.preventDefault();
+      movePaddle(side, canvasPoint(event).y);
+    });
+
+    function releasePointer(event) {
+      activePointers.delete(event.pointerId);
+      if (canvas.hasPointerCapture(event.pointerId)) {
+        canvas.releasePointerCapture(event.pointerId);
+      }
+    }
+
+    canvas.addEventListener('pointerup', releasePointer);
+    canvas.addEventListener('pointercancel', releasePointer);
+
+    document.addEventListener('keydown', event => {
+      keys[event.key] = true;
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        event.preventDefault();
+      }
+    });
+
+    document.addEventListener('keyup', event => {
+      keys[event.key] = false;
+    });
+
+    startBtn.addEventListener('click', toggleStartPause);
+    modeBtn.addEventListener('click', toggleMode);
+    difficultyBtn.addEventListener('click', cycleDifficulty);
+    resetBtn.addEventListener('click', resetGame);
+
+    resetGame();
+    loop();
+  </script>
+</body>
+</html>

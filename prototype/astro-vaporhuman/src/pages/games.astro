@@ -1,0 +1,85 @@
+---
+import Band from "../components/Band.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+
+const description =
+  "Play VaporPong, an early static browser-game prototype from VaporHuman.";
+---
+
+<BaseLayout title="Play VaporPong" description={description} canonicalPath="/games.html" currentPath="/games.html">
+  <PageHero
+    kicker="Static browser prototype"
+    title="Play VaporPong"
+    lede="A small playable prototype while VaporHuman experiments with useful, human-reviewed digital tools."
+    body="VaporPong runs locally in the page and does not require login, checkout, tracking, or a live assistant."
+  >
+    <div class="button-row" aria-label="Game page links">
+      <a class="button" href="#vaporpong-frame">Play VaporPong</a>
+      <a class="button button--ghost" href="/trust.html">Review the trust boundary</a>
+    </div>
+  </PageHero>
+
+  <Band variant="intro" kicker="Prototype" title="The game runs as an isolated static file." id="vaporpong-frame">
+    <div class="game-shell" aria-label="VaporPong embedded game">
+      <iframe
+        src="/games/vaporpong.html"
+        width="720"
+        height="640"
+        title="VaporPong"
+        loading="lazy"
+      ></iframe>
+    </div>
+    <p class="game-note">Player 1: W/S | Player 2: Arrow Up/Down | First to 11</p>
+  </Band>
+
+  <Band variant="status" kicker="Current boundary" title="Free, local, and static." id="game-boundary" columns>
+    <div>
+      <p>
+        This prototype is not a paid product yet. It does not create an account,
+        persist scores, submit forms, collect visitor data, embed checkout, or
+        call external services.
+      </p>
+      <p>
+        Future paid access, scoreboards, accounts, analytics, or multiplayer
+        would need a separate implementation and approval gate.
+      </p>
+      <div class="button-row" aria-label="Game navigation">
+        <a class="button" href="/">Back to Home</a>
+        <a class="button button--ghost" href="/trust.html">Trust page</a>
+      </div>
+    </div>
+  </Band>
+
+  <style is:inline>
+    .game-shell {
+      width: min(100%, 760px);
+      margin-top: 3rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .game-shell iframe {
+      display: block;
+      width: 100%;
+      min-height: min(640px, 100svh);
+      border: 0;
+      background: #141416;
+    }
+
+    .game-note {
+      margin-top: 1rem;
+      color: var(--ink);
+      font-weight: 850;
+    }
+
+    @media (max-width: 780px) {
+      .game-shell iframe {
+        min-height: 720px;
+      }
+    }
+  </style>
+</BaseLayout>

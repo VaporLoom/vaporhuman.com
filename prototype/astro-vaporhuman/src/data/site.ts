@@ -8,6 +8,7 @@ export const site = {
     { href: "/work.html", label: "Work With Us" },
     { href: "/shop.html", label: "Shop" },
     { href: "/social.html", label: "Social" },
+    { href: "/games.html", label: "Play" },
     { href: "/about.html", label: "About" },
     { href: "/trust.html", label: "Trust" },
     { href: "/faq.html", label: "FAQ" }
@@ -24,6 +25,7 @@ export const site = {
     { href: "/work.html", label: "Work with VaporHuman" },
     { href: "/shop.html", label: "Shop" },
     { href: "/social.html", label: "Social and share" },
+    { href: "/games.html", label: "Play VaporPong" },
     { href: "/about.html", label: "About" },
     { href: "/trust.html", label: "Trust boundary" },
     { href: "/faq.html", label: "FAQ" },
@@ -45,6 +47,7 @@ export const site = {
     "/work.html",
     "/shop.html",
     "/social.html",
+    "/games.html",
     "/about.html",
     "/trust.html",
     "/faq.html",

@@ -95,9 +95,12 @@ if (!existsSync(dist)) {
 
   for (const file of textFiles) {
     const rel = relative(root, file);
+    const relNormalized = rel.replace(/\\/g, "/");
+    const isLocalGameAsset = relNormalized === "dist/games/vaporpong.html";
     const rawContent = readFileSync(file, "utf8");
     const content = stripApprovedAnalyticsBlocks(rawContent, rel);
     for (const check of forbidden) {
+      if (isLocalGameAsset && check.name === "script tag") continue;
       if (check.pattern.test(content)) {
         fail(`${check.name} found in ${rel}`);
       }
@@ -157,6 +160,8 @@ if (!existsSync(dist)) {
     "work.html",
     "shop.html",
     "social.html",
+    "games.html",
+    "games/vaporpong.html",
     "about.html",
     "trust.html",
     "faq.html",
@@ -287,6 +292,54 @@ if (!existsSync(dist)) {
     ]) {
       if (!shop.includes(signal)) {
         fail(`shop page signal missing: ${signal}`);
+      }
+    }
+  }
+
+  const gamesPath = join(dist, "games.html");
+  if (existsSync(gamesPath)) {
+    const games = readFileSync(gamesPath, "utf8");
+    for (const signal of [
+      "Play VaporPong",
+      "/games/vaporpong.html",
+      "does not require login, checkout, tracking, or a live assistant",
+      "Player 1: W/S"
+    ]) {
+      if (!games.includes(signal)) {
+        fail(`games page signal missing: ${signal}`);
+      }
+    }
+  }
+
+  const vaporPongPath = join(dist, "games", "vaporpong.html");
+  if (existsSync(vaporPongPath)) {
+    const vaporPong = readFileSync(vaporPongPath, "utf8");
+    for (const signal of [
+      "<canvas",
+      "VaporPong",
+      "Mode: CPU P1",
+      "CPU: Normal",
+      "CPU_SETTINGS",
+      "prefers-reduced-motion",
+      "pointerdown",
+      "function pauseGame"
+    ]) {
+      if (!vaporPong.includes(signal)) {
+        fail(`VaporPong asset signal missing: ${signal}`);
+      }
+    }
+    for (const blocked of [
+      /https?:\/\//i,
+      /<form\b/i,
+      /<script[^>]+src=/i,
+      /\blocalStorage\b/i,
+      /\bsessionStorage\b/i,
+      /\bdocument\.cookie\b/i,
+      /\bfetch\s*\(/i,
+      /\bXMLHttpRequest\b/i
+    ]) {
+      if (blocked.test(vaporPong)) {
+        fail(`blocked behavior found in VaporPong asset: ${blocked}`);
       }
     }
   }
