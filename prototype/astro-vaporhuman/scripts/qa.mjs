@@ -303,7 +303,8 @@ if (!existsSync(dist)) {
       "Play VaporPong",
       "/games/vaporpong.html",
       "does not require login, checkout, tracking, or a live assistant",
-      "Player 1: W/S"
+      "Classic: first to 7",
+      "Climb: clear CPU rounds"
     ]) {
       if (!games.includes(signal)) {
         fail(`games page signal missing: ${signal}`);
