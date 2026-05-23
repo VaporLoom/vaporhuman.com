@@ -46,7 +46,7 @@
     }
 
     main {
-      width: min(100%, 760px);
+      width: min(760px, calc(100vw - clamp(32px, 8vw, 72px)));
       min-height: calc(100vh - clamp(32px, 8vw, 72px));
       margin: 0 auto;
       display: grid;
@@ -82,6 +82,7 @@
       color: var(--muted);
       font-size: 14px;
       line-height: 1.55;
+      overflow-wrap: anywhere;
     }
 
     .stage {
@@ -117,16 +118,25 @@
     }
 
     .controls-note,
+    .rules-note,
     .status,
     .rights-note {
       margin: 0;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
+      max-width: 100%;
+      overflow-wrap: anywhere;
     }
 
     .status {
       color: var(--ball);
+    }
+
+    .controls-note span,
+    .rules-note span {
+      display: inline-block;
+      margin-right: 10px;
     }
 
     .rights-note {
@@ -185,6 +195,7 @@
       }
 
       main {
+        width: calc(100vw - 28px);
         min-height: calc(100vh - 28px);
         align-content: start;
       }
@@ -196,6 +207,19 @@
       .button-row,
       .button-row button {
         width: 100%;
+      }
+
+      .context,
+      .controls-note,
+      .rules-note,
+      .status {
+        font-size: 12px;
+      }
+
+      .controls-note span,
+      .rules-note span {
+        display: block;
+        margin-right: 0;
       }
     }
 
@@ -220,7 +244,7 @@
       <p class="eyebrow">VaporHuman static prototype</p>
       <h1 id="gameTitle">VaporPong</h1>
       <p class="context">
-        An early static browser-game prototype. It runs locally in this page and does not require login, checkout, tracking, or a live assistant.
+        Static local prototype. No login. No tracking.
       </p>
     </header>
 
@@ -230,24 +254,33 @@
         width="680"
         height="400"
         role="img"
-        aria-label="VaporPong canvas. Player 1 uses W and S. Player 2 uses Arrow Up and Arrow Down. First to 11 wins."
+        aria-label="VaporPong canvas. Player 1 uses W and S. Player 2 uses Arrow Up and Arrow Down. Classic is first to 7. Round Climb gets harder each clear."
       ></canvas>
     </section>
 
     <section class="hud" aria-label="Game controls">
       <div class="hud-row">
-        <p class="controls-note">Default: CPU Player 1 | Player 2: Arrow Up/Down | 2 Player mode: W/S</p>
+        <p class="controls-note">
+          <span>Classic: first to 7</span>
+          <span>Climb: clear CPU rounds</span>
+          <span>P2: Arrow Up/Down</span>
+        </p>
         <div class="button-row">
           <button id="startBtn" type="button">Start</button>
           <button id="modeBtn" type="button">Mode: CPU P1</button>
+          <button id="rulesBtn" type="button">Game: Classic 7</button>
           <button id="difficultyBtn" type="button">CPU: Normal</button>
           <button id="resetBtn" type="button">Reset</button>
         </div>
       </div>
+      <p class="rules-note">
+        <span>SPD = faster until point</span>
+        <span>BIG = larger until point</span>
+      </p>
       <p id="statusText" class="status" aria-live="polite">Ready.</p>
       <p class="rights-note">Copyright (c) 2026 VaporHuman. All rights reserved.</p>
       <p class="sr-only" id="screenReaderHint">
-        In CPU mode, pointer and touch controls move Player 2. In 2 Player mode, they move the paddle on the side where contact begins.
+        In CPU mode, pointer and touch controls move Player 2. In 2 Player mode, they move the paddle on the side where contact begins. Round Climb is CPU-only.
       </p>
     </section>
   </main>
@@ -257,6 +290,7 @@
     const ctx = canvas.getContext('2d');
     const startBtn = document.getElementById('startBtn');
     const modeBtn = document.getElementById('modeBtn');
+    const rulesBtn = document.getElementById('rulesBtn');
     const difficultyBtn = document.getElementById('difficultyBtn');
     const resetBtn = document.getElementById('resetBtn');
     const statusText = document.getElementById('statusText');
@@ -270,7 +304,9 @@
     const PADDLE_SPEED = 6;
     const INIT_SPEED = 4;
     const MAX_SPEED = 18;
-    const WIN_SCORE = 11;
+    const CLASSIC_TARGET = 7;
+    const COUNTDOWN_STEPS = ['3', '2', '1', 'PLAY'];
+    const COUNTDOWN_STEP_MS = 600;
     const DIFFICULTY_ORDER = ['easy', 'normal', 'hard'];
     const CPU_SETTINGS = {
       easy: { label: 'Easy', maxSpeed: 3.3, ease: 0.052, deadZone: 22, reaction: 5, error: 44 },
@@ -292,6 +328,7 @@
 
     let gameState = 'waiting';
     let gameMode = 'single';
+    let rulesMode = 'classic';
     let difficulty = 'normal';
     let winnerText = '';
     let keys = {};
@@ -299,6 +336,16 @@
     let trail = [];
     let powerUp = null;
     let cpuFrame = 0;
+    let pausedFrom = null;
+    let countdown = {
+      active: false,
+      startedAt: 0,
+      pausedElapsed: 0,
+      title: '3',
+      subtitle: 'Get ready'
+    };
+    let roundLevel = 1;
+    let roundsCleared = 0;
     const activePointers = new Map();
 
     const left = { x: 30, y: H / 2 - PADDLE_H / 2, h: PADDLE_H };
@@ -319,7 +366,7 @@
     }
 
     function setButtonLabel() {
-      if (gameState === 'playing') startBtn.textContent = 'Pause';
+      if (gameState === 'playing' || gameState === 'countdown') startBtn.textContent = 'Pause';
       else if (gameState === 'paused') startBtn.textContent = 'Resume';
       else if (gameState === 'ended') startBtn.textContent = 'Play Again';
       else startBtn.textContent = 'Start';
@@ -327,11 +374,23 @@
 
     function setModeLabel() {
       modeBtn.textContent = gameMode === 'single' ? 'Mode: CPU P1' : 'Mode: 2 Player';
+      modeBtn.disabled = rulesMode === 'rounds';
+    }
+
+    function setRulesLabel() {
+      rulesBtn.textContent = rulesMode === 'classic' ? 'Game: Classic 7' : 'Game: Climb';
     }
 
     function setDifficultyLabel() {
-      difficultyBtn.textContent = 'CPU: ' + CPU_SETTINGS[difficulty].label;
-      difficultyBtn.disabled = gameMode !== 'single';
+      difficultyBtn.textContent = rulesMode === 'rounds' ? 'CPU: Auto' : 'CPU: ' + CPU_SETTINGS[difficulty].label;
+      difficultyBtn.disabled = gameMode !== 'single' || rulesMode === 'rounds';
+    }
+
+    function resetProgress() {
+      score.left = 0;
+      score.right = 0;
+      roundLevel = 1;
+      roundsCleared = 0;
     }
 
     function resetPaddleSizes() {
@@ -361,35 +420,90 @@
       powerUp = null;
     }
 
+    function cancelCountdown() {
+      countdown.active = false;
+      countdown.startedAt = 0;
+      countdown.pausedElapsed = 0;
+      countdown.title = '3';
+      countdown.subtitle = 'Get ready';
+      pausedFrom = null;
+    }
+
+    function countdownElapsed(now) {
+      if (!countdown.active) return 0;
+      return Math.max(0, now - countdown.startedAt);
+    }
+
+    function countdownLabel(now) {
+      const elapsed = countdownElapsed(now);
+      const index = Math.min(COUNTDOWN_STEPS.length - 1, Math.floor(elapsed / COUNTDOWN_STEP_MS));
+      return COUNTDOWN_STEPS[index];
+    }
+
+    function updateCountdown(now) {
+      if (gameState !== 'countdown' || !countdown.active) return;
+
+      countdown.title = countdownLabel(now);
+      if (countdownElapsed(now) >= COUNTDOWN_STEPS.length * COUNTDOWN_STEP_MS) {
+        countdown.active = false;
+        gameState = 'playing';
+        pausedFrom = null;
+        setButtonLabel();
+        if (rulesMode === 'rounds') {
+          setStatus('Playing Round ' + roundLevel + '.');
+        } else {
+          setStatus(gameMode === 'single' ? 'Playing first to ' + CLASSIC_TARGET + '. CPU: ' + CPU_SETTINGS[difficulty].label + '.' : 'Playing first to ' + CLASSIC_TARGET + '.');
+        }
+      }
+    }
+
+    function startCountdown(subtitle) {
+      countdown.active = true;
+      countdown.startedAt = performance.now();
+      countdown.pausedElapsed = 0;
+      countdown.title = '3';
+      countdown.subtitle = subtitle || 'Get ready';
+      gameState = 'countdown';
+      pausedFrom = null;
+      setButtonLabel();
+      setStatus(countdown.subtitle + '. Serve in 3.');
+    }
+
     function resetGame() {
       gameState = 'waiting';
       winnerText = '';
-      score.left = 0;
-      score.right = 0;
+      cancelCountdown();
+      resetProgress();
       resetPaddles();
       resetBall();
       setButtonLabel();
       setModeLabel();
+      setRulesLabel();
       setDifficultyLabel();
-      setStatus(gameMode === 'single' ? 'Ready. CPU controls Player 1.' : 'Ready. Two-player mode.');
+      setStatus(rulesMode === 'rounds' ? 'Ready. Round Climb.' : gameMode === 'single' ? 'Ready. Classic first to ' + CLASSIC_TARGET + '.' : 'Ready. 2 Player first to ' + CLASSIC_TARGET + '.');
     }
 
     function startGame() {
       if (gameState === 'ended') {
-        score.left = 0;
-        score.right = 0;
+        resetProgress();
         resetPaddles();
       }
 
       winnerText = '';
       resetBall();
-      gameState = 'playing';
-      setButtonLabel();
-      setStatus(gameMode === 'single' ? 'Playing. CPU Player 1 is set to ' + CPU_SETTINGS[difficulty].label + '.' : 'Playing. Player 1 uses W/S.');
+      if (rulesMode === 'rounds') {
+        startCountdown('Round ' + roundLevel + '. Clear the CPU');
+      } else {
+        startCountdown(gameMode === 'single' ? 'First to ' + CLASSIC_TARGET + '. CPU Player 1 is ready' : 'First to ' + CLASSIC_TARGET + '. Players ready');
+      }
     }
 
     function pauseGame() {
-      if (gameState !== 'playing') return;
+      if (gameState !== 'playing' && gameState !== 'countdown') return;
+      pausedFrom = gameState;
+      if (gameState === 'countdown' && countdown.active) {
+        countdown.pausedElapsed = countdownElapsed(performance.now());
+      }
       gameState = 'paused';
       setButtonLabel();
       setStatus('Paused.');
@@ -397,24 +511,42 @@
 
     function resumeGame() {
       if (gameState !== 'paused') return;
-      gameState = 'playing';
+      if (pausedFrom === 'countdown' && countdown.active) {
+        countdown.startedAt = performance.now() - countdown.pausedElapsed;
+        gameState = 'countdown';
+        setStatus(countdown.subtitle + '. Serve in ' + countdownLabel(performance.now()) + '.');
+      } else {
+        gameState = 'playing';
+        setStatus('Playing.');
+      }
+      pausedFrom = null;
       setButtonLabel();
-      setStatus('Playing.');
     }
 
     function toggleStartPause() {
-      if (gameState === 'playing') pauseGame();
+      if (gameState === 'playing' || gameState === 'countdown') pauseGame();
       else if (gameState === 'paused') resumeGame();
       else startGame();
     }
 
     function toggleMode() {
+      if (rulesMode === 'rounds') return;
       gameMode = gameMode === 'single' ? 'versus' : 'single';
       resetGame();
-      setStatus(gameMode === 'single' ? 'CPU controls Player 1. You control Player 2.' : 'Two-player mode. Player 1 uses W/S.');
+      setStatus(gameMode === 'single' ? 'CPU Player 1. You are Player 2.' : '2 Player. Player 1 uses W/S.');
+    }
+
+    function toggleRulesMode() {
+      rulesMode = rulesMode === 'classic' ? 'rounds' : 'classic';
+      if (rulesMode === 'rounds') {
+        gameMode = 'single';
+      }
+      resetGame();
+      setStatus(rulesMode === 'rounds' ? 'Round Climb. CPU gets harder.' : 'Classic. First to ' + CLASSIC_TARGET + '.');
     }
 
     function cycleDifficulty() {
+      if (rulesMode === 'rounds') return;
       const current = DIFFICULTY_ORDER.indexOf(difficulty);
       difficulty = DIFFICULTY_ORDER[(current + 1) % DIFFICULTY_ORDER.length];
       setDifficultyLabel();
@@ -449,6 +581,27 @@
       };
     }
 
+    function roundDifficultyKey() {
+      if (roundLevel <= 2) return 'easy';
+      if (roundLevel <= 4) return 'normal';
+      return 'hard';
+    }
+
+    function activeCpuSettings() {
+      if (rulesMode !== 'rounds') return CPU_SETTINGS[difficulty];
+
+      const base = CPU_SETTINGS[roundDifficultyKey()];
+      const ramp = Math.max(0, roundLevel - 1);
+      return {
+        label: 'Round ' + roundLevel,
+        maxSpeed: Math.min(base.maxSpeed + ramp * 0.22, 7.6),
+        ease: Math.min(base.ease + ramp * 0.004, 0.12),
+        deadZone: Math.max(base.deadZone - ramp, 4),
+        reaction: Math.max(base.reaction - Math.floor(ramp / 2), 3),
+        error: Math.max(base.error - ramp * 3, 6)
+      };
+    }
+
     function applySpeedLimit() {
       const current = Math.hypot(ball.vx, ball.vy);
       if (current === 0) return;
@@ -470,7 +623,32 @@
       burst(ball.x, ball.y, color, 8);
     }
 
+    function finishRoundPoint(side) {
+      resetPaddleSizes();
+
+      if (side === 'right') {
+        roundsCleared++;
+        roundLevel++;
+        score.left = 0;
+        score.right = roundsCleared;
+        resetBall(1);
+        startCountdown('Round ' + roundLevel + '. Cleared ' + roundsCleared);
+        return;
+      }
+
+      score.left = 1;
+      gameState = 'ended';
+      winnerText = 'Run over';
+      setButtonLabel();
+      setStatus('Run over. Cleared ' + roundsCleared + ' round' + (roundsCleared === 1 ? '' : 's') + '.');
+    }
+
     function finishPoint(side) {
+      if (rulesMode === 'rounds') {
+        finishRoundPoint(side);
+        return;
+      }
+
       if (side === 'left') {
         score.left++;
         burst(W, ball.y, COLORS.speed, 12);
@@ -481,8 +659,8 @@
 
       resetPaddleSizes();
 
-      if (score.left >= WIN_SCORE || score.right >= WIN_SCORE) {
-        const winner = score.left >= WIN_SCORE ? 'Player 1' : 'Player 2';
+      if (score.left >= CLASSIC_TARGET || score.right >= CLASSIC_TARGET) {
+        const winner = score.left >= CLASSIC_TARGET ? 'Player 1' : 'Player 2';
         gameState = 'ended';
         winnerText = winner + ' wins';
         setButtonLabel();
@@ -490,8 +668,8 @@
         return;
       }
 
-      setStatus('Score: Player 1 ' + score.left + ', Player 2 ' + score.right + '.');
       resetBall(side === 'left' ? -1 : 1);
+      startCountdown('Point to Player ' + (side === 'left' ? '1' : '2') + '. First to ' + CLASSIC_TARGET + ': ' + score.left + '-' + score.right);
     }
 
     function updateKeyboardControls() {
@@ -507,7 +685,7 @@
       if (gameMode !== 'single') return;
 
       cpuFrame++;
-      const settings = CPU_SETTINGS[difficulty];
+      const settings = activeCpuSettings();
       const center = left.y + left.h / 2;
       const ballMovingTowardCpu = ball.vx < 0;
       const distancePressure = clamp((W - ball.x) / W, 0, 1);
@@ -523,7 +701,9 @@
       left.y = clamp(left.y + step, 0, H - left.h);
     }
 
-    function update() {
+    function update(now) {
+      if (typeof now !== 'number') now = performance.now();
+      updateCountdown(now);
       if (gameState !== 'playing') return;
 
       updateKeyboardControls();
@@ -572,8 +752,14 @@
         applyPaddleHit(right, -1, COLORS.right);
       }
 
-      if (ball.x < -ball.size) finishPoint('right');
-      if (ball.x > W + ball.size) finishPoint('left');
+      if (ball.x < -ball.size) {
+        finishPoint('right');
+        return;
+      }
+      if (ball.x > W + ball.size) {
+        finishPoint('left');
+        return;
+      }
 
       spawnPowerUp();
       if (powerUp) {
@@ -586,11 +772,13 @@
             ball.vx *= 1.35;
             ball.vy *= 1.35;
             applySpeedLimit();
+            setStatus('SPD active until point. Faster ball.');
           } else {
             left.h = Math.min(left.h * 1.25, H * 0.55);
             right.h = Math.min(right.h * 1.25, H * 0.55);
             left.y = clamp(left.y, 0, H - left.h);
             right.y = clamp(right.y, 0, H - right.h);
+            setStatus('BIG active until point. Larger paddles.');
           }
           powerUp = null;
         }
@@ -722,9 +910,13 @@
       ctx.fillStyle = 'rgba(247, 244, 235, 0.72)';
       ctx.font = '12px Courier New';
       ctx.textAlign = 'left';
-      ctx.fillText(gameMode === 'single' ? 'CPU P1: ' + CPU_SETTINGS[difficulty].label : 'P1 HUMAN', 18, H - 18);
+      if (rulesMode === 'rounds') {
+        ctx.fillText('CLIMB CPU: ' + activeCpuSettings().label, 18, H - 18);
+      } else {
+        ctx.fillText(gameMode === 'single' ? 'CPU P1: ' + CPU_SETTINGS[difficulty].label : 'P1 HUMAN', 18, H - 18);
+      }
       ctx.textAlign = 'right';
-      ctx.fillText('P2 HUMAN', W - 18, H - 18);
+      ctx.fillText(rulesMode === 'rounds' ? 'CLEARED ' + roundsCleared : 'FIRST TO ' + CLASSIC_TARGET, W - 18, H - 18);
     }
 
     function draw() {
@@ -738,13 +930,14 @@
       drawScores();
       drawModeTag();
 
-      if (gameState === 'waiting') drawOverlay('VAPORPONG', gameMode === 'single' ? 'Press Start to challenge the CPU' : 'Press Start for 2 Player');
+      if (gameState === 'waiting') drawOverlay('VAPORPONG', rulesMode === 'rounds' ? 'Round Climb: clear as many as you can' : gameMode === 'single' ? 'Classic first to ' + CLASSIC_TARGET : 'Classic 2 Player first to ' + CLASSIC_TARGET);
+      if (gameState === 'countdown') drawOverlay(countdown.title, countdown.subtitle);
       if (gameState === 'paused') drawOverlay('PAUSED', 'Press Resume to continue');
       if (gameState === 'ended') drawOverlay(winnerText, 'Press Play Again to restart');
     }
 
-    function loop() {
-      update();
+    function loop(now) {
+      update(now);
       draw();
       window.requestAnimationFrame(loop);
     }
@@ -801,11 +994,12 @@
 
     startBtn.addEventListener('click', toggleStartPause);
     modeBtn.addEventListener('click', toggleMode);
+    rulesBtn.addEventListener('click', toggleRulesMode);
     difficultyBtn.addEventListener('click', cycleDifficulty);
     resetBtn.addEventListener('click', resetGame);
 
     resetGame();
-    loop();
+    window.requestAnimationFrame(loop);
   </script>
 </body>
 </html>
