@@ -105,7 +105,7 @@ export const checkoutTargets = [
     status: "Live external shop"
   },
   {
-    title: "VaporHuman private intake",
+    title: "Stripe-hosted paid discovery",
     body:
       "Paid discovery session for workflow, website, lead path, automation, or AI/business operations review.",
     status: "Live Stripe-hosted payment link",

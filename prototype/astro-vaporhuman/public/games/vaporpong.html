@@ -145,6 +145,23 @@
       font-size: 11px;
     }
 
+    .site-link {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .site-link a {
+      color: var(--cyan);
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.2em;
+    }
+
+    .site-link a:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
     .button-row {
       display: flex;
       gap: 8px;
@@ -279,6 +296,7 @@
         <span>BIG = larger until point</span>
       </p>
       <p id="statusText" class="status" aria-live="polite">Ready.</p>
+      <p class="site-link"><a href="/games.html" target="_top">Back to VaporHuman games</a></p>
       <p class="rights-note">Copyright (c) 2026 VaporHuman. All rights reserved.</p>
       <p class="sr-only" id="screenReaderHint">
         In CPU mode, pointer and touch controls move Player 2. In 2 Player mode, they move the paddle on the side where contact begins. Round Climb is CPU-only.

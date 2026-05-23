@@ -31,6 +31,7 @@ const description =
       ></iframe>
     </div>
     <p class="game-note">Classic: first to 7 | Climb: clear CPU rounds | P2: Arrow Up/Down | 2P: P1 W/S</p>
+    <p class="game-mode-note">Classic is the quick match. Climb is the CPU challenge mode.</p>
   </Band>
 
   <Band variant="status" kicker="Current boundary" title="Free, local, and static." id="game-boundary" columns>
@@ -74,6 +75,11 @@ const description =
       margin-top: 1rem;
       color: var(--ink);
       font-weight: 850;
+    }
+
+    .game-mode-note {
+      margin-top: 0.45rem;
+      color: var(--muted);
     }
 
     @media (max-width: 780px) {
