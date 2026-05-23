@@ -121,13 +121,16 @@ a:focus-visible {
   font-weight: 950;
 }
 
-.brand::before {
-  content: "";
-  width: 0.7rem;
-  height: 0.7rem;
-  border: 2px solid var(--green);
-  border-radius: 50%;
-  box-shadow: 0 0 18px rgba(174, 233, 95, 0.44);
+.brand-mark {
+  flex: 0 0 auto;
+  width: 1.45rem;
+  height: 1.45rem;
+  display: block;
+  filter: drop-shadow(0 0 16px rgba(112, 228, 242, 0.26));
+}
+
+.brand span {
+  display: inline-block;
 }
 
 .header-actions {
