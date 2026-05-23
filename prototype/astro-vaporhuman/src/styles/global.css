@@ -349,6 +349,19 @@ p {
   font-weight: 760;
 }
 
+.hero-assurance,
+.map-caption,
+.external-note {
+  color: var(--ink);
+  font-weight: 780;
+}
+
+.map-caption,
+.external-note {
+  max-width: 62ch;
+  font-size: 0.96rem;
+}
+
 .band {
   width: 100%;
   padding: 5rem var(--space-page);

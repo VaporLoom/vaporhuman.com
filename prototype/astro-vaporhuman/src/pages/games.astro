@@ -30,8 +30,13 @@ const description =
         loading="lazy"
       ></iframe>
     </div>
+    <div class="button-row game-frame-actions" aria-label="Game page return links">
+      <a class="button" href="/">Back to VaporHuman home</a>
+      <a class="button button--ghost" href="/trust.html">Review the trust boundary</a>
+    </div>
     <p class="game-note">Classic: first to 7 | Climb: clear CPU rounds | P2: Arrow Up/Down | 2P: P1 W/S</p>
     <p class="game-mode-note">Classic is the quick match. Climb is the CPU challenge mode.</p>
+    <p class="game-mode-note">On phones, landscape orientation usually gives the canvas and controls more room.</p>
   </Band>
 
   <Band variant="status" kicker="Current boundary" title="Free, local, and static." id="game-boundary" columns>
@@ -80,6 +85,10 @@ const description =
     .game-mode-note {
       margin-top: 0.45rem;
       color: var(--muted);
+    }
+
+    .game-frame-actions {
+      margin-top: 1rem;
     }
 
     @media (max-width: 780px) {

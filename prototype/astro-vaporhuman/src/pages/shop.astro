@@ -11,17 +11,18 @@ const description =
 <BaseLayout title="Shop" description={description} canonicalPath="/shop.html" currentPath="/shop.html">
   <PageHero
     kicker="Shop"
-    title="Support the work through the live Fourthwall shop."
-    lede="The current support and storefront route lives outside this site."
-    body="Fourthwall handles the storefront and checkout externally. VaporHuman links to it without embedding checkout, cart scripts, tracking pixels, or account behavior."
+    title="Use the external Fourthwall shop."
+    lede="The current storefront lives outside this site."
+    body="Fourthwall handles the shop, cart, and checkout. VaporHuman links to it without adding an internal cart, login, checkout embed, tracking pixel, or account behavior."
   >
     <div class="button-row" aria-label="Shop actions">
-      <a class="button" href={fourthwallShop.url} target="_blank" rel="noopener noreferrer">Visit the shop</a>
+      <a class="button" href={fourthwallShop.url} target="_blank" rel="noopener noreferrer">Open Fourthwall shop</a>
       <a class="button button--ghost" href="/work.html">Work with VaporHuman</a>
     </div>
+    <p class="external-note">The shop button leaves vaporhuman.com and opens Fourthwall in a new tab.</p>
   </PageHero>
 
-  <Band variant="intro" kicker="Storefront routes" title="Three shop states, one clear boundary." id="storefront-title">
+  <Band variant="intro" kicker="Storefront routes" title="Current shop route, future shop routing." id="storefront-title">
     <div class="shop-grid" aria-label="Shop route cards">
       <article class="shop-card">
         <p class="status-label">{fourthwallShop.status}</p>
